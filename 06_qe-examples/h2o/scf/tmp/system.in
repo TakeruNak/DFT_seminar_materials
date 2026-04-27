@@ -1,0 +1,51 @@
+NAME h2o
+CAL  scf
+NUM_PROCS 2
+
+# ============================================
+# $CAL is the flag for calculation methods
+# --- QE ---
+# scf = scf calcultion
+# band = band calculation
+# wf = wave functions
+# cd = charge density
+# dos = density of states
+# proj = projection wave function
+# lat_opt = optimization of lattice const.
+# relax = relaxation of the inner structure
+# vc-relax = relaxation of the inner and lattice const.
+#
+# --- Wannier90 ---
+# wannier = loacalized maximum wannier
+#
+# --- ESM-RISM ---
+# esm-rism = ESM-RISM calculation
+# pprism = Post process ESM-RISM calculation
+#
+# --- BGW ---
+# epsilon.real.x = bgw epsilon real
+# epsilon.cplx.x = bgw epsilon complex
+# sigma.real = bgw sigma real
+# sigma.cplx = bgw sigma complex
+# inteqp.real = bgw inteqp real
+# inteqp.cplx = bgw inteqp complex
+# kernel.real = bgw kernel real
+# kernel.cplx = bgw kernel complex
+# absorption.real = bgw absorption real
+# absorption.cplx = bgw absorption complex
+#
+# ============================================
+
+### USAGE ###
+# - scf -
+# > 1) mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
+#
+# - proj -
+# ${NAME}.scf.in, ${NAME}.nscf.in, ${NAME}.projwfc.in, projwfc.plt,
+# and chprojwfcplot_mac.sh are needed
+#
+# > 1) mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
+# > 2) mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
+# > 3) mpirun -np ${NUM_PROCS} projwfc.x -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
+# > 4) ./chprojwfcplot_mac.sh ${NAME}
+# --------------------------------------------

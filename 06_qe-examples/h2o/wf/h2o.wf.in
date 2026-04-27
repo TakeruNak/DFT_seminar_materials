@@ -1,0 +1,13 @@
+&inputpp
+    prefix = 'h2o',
+    outdir = './out'
+    plot_num = 7
+    kpoint=1
+    kband=3
+    lsign=.true.
+/
+&plot
+    iflag=3
+    output_format=6
+    fileout='h2o_G3.cube'
+/
