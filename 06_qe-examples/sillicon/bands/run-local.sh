@@ -2,7 +2,7 @@
 
 PW_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pw.x
 PP_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pp.x
-BANDS_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bands.x
+BANDS_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/bands.x
 # UTILITY_COMMAND=/Users/takerunakashima/workspace/src/QE/utulity/
 
 if [ -e system.in ]; then
@@ -111,23 +111,23 @@ elif [ ${CAL} = "stm_cc" ]; then      ### constant-current calculation ###
 elif [ ${CAL} = "relax" ]; then      ### relaxation of inner structure calculation ###
     ###
     echo ">> Start relax calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.relax.in >${NAME}.relax.out 
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.relax.in >${NAME}.relax.out 
     ###
 elif [ ${CAL} = "vc-relax" ]; then      ### relaxation of inner and lattice structure calculation ###
     ###
     echo ">> Start vc-relax calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.vc-relax.in >${NAME}.vc-relax.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.vc-relax.in >${NAME}.vc-relax.out
     ###
 elif [ ${CAL} = "bands" ]; then      ### Band calculation ###
     ###
     echo ">> Start bands calculation"
-    mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.scf.in >${NAME}.scf.out
-    wait
-    mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.nscf.in >${NAME}.nscf.out
-    wait
+    # mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.scf.in >${NAME}.scf.out
+    # wait
+    # mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.nscf.in >${NAME}.nscf.out
+    # wait
     mpirun -np ${NUM_PROCS} ${BANDS_COMMAND} < ${NAME}.bands.in >${NAME}.bands.out
-    wait
-    ./chbandplot_mac.sh ${NAME}
+    # wait
+    # ./chbandplot_mac.sh ${NAME}
     ###
 elif [ ${CAL} = "wf" ]; then        ### Wave function calculation ###
     ###
@@ -139,7 +139,7 @@ elif [ ${CAL} = "wf" ]; then        ### Wave function calculation ###
 elif [ ${CAL} = "cd" ]; then        ### charge density calculation ###
     ###
     echo ">> Start charge density calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
     wait
 #    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
 #    wait
@@ -148,9 +148,9 @@ elif [ ${CAL} = "cd" ]; then        ### charge density calculation ###
 elif [ ${CAL} = "dos" ]; then       ### Density of states calcualtion ###
     ###
     echo ">> Start DOS calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
     wait
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.nscf.in >${NAME}.nscf.out
     wait
     mpirun -np ${NUM_PROCS} dos.x -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
     wait
@@ -183,7 +183,7 @@ elif [ ${CAL} = "proj" ]; then   ### Projection wave function ###
     echo ">> Start projection calculation"
     # mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
     # wait
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.nscf.in >${NAME}.nscf.out
     wait
     mpirun -np ${NUM_PROCS} projwfc.x -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
     wait
@@ -196,7 +196,7 @@ elif [ ${CAL} = "pw2bgw" ]; then   ### --- pw2bgw --- ###
     #wait
     #cat kgrid.out  >> ./in
     #wait
-    mpirun -n ${PJM_MPI_PROC} pw.x -in ${NAME}.nscf.in &> ${NAME}.nscf.out
+    mpirun -n ${PJM_MPI_PROC} ${PW_COMMAND} -in ${NAME}.nscf.in &> ${NAME}.nscf.out
     wait
     mpirun -n ${PJM_MPI_PROC} pw2bgw.x -in  ${NAME}.pw2bgw.in &> ${NAME}.pw2bgw.out
     ###
@@ -269,7 +269,7 @@ elif [ ${CAL} = "absorption.cplx" ]; then   ### --- absorption.cplx --- ###
 elif [ ${CAL} = "esm-rism" ]; then   ### --- ESM-Calculation --- ###
     ###
     echo ">> Start ESM-Calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.esm-rism.in >${NAME}.esm-rism.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.esm-rism.in >${NAME}.esm-rism.out
     ###
 elif [ ${CAL} = "pprism" ]; then   ### --- ESM-Calculation --- ###
     ###

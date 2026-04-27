@@ -1,5 +1,5 @@
-NAME graphene
-CAL  wf
+NAME graphite
+CAL  scf
 NUM_PROCS 6
 
 # ============================================
