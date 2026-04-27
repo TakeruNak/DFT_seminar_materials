@@ -28,7 +28,7 @@ x = np.linspace(-np.pi, np.pi, 1000)
 y_ideal = np.sign(np.sin(x))
 
 # 足し合わせる基底関数（サイン波）の数 N のリスト
-N_list = [1, 3, 5, 50]
+N_list = [1, 3, 5, 50, 100, 200, 300, 400 ]
 
 # グラフの設定
 plt.figure(figsize=(12, 8))
@@ -46,7 +46,7 @@ for i, N in enumerate(N_list):
         y_approx += (4 / np.pi) * (np.sin(n * x) / n)
 
     # グラフの描画処理
-    plt.subplot(2, 2, i + 1)
+    plt.subplot(2, 4, i + 1)
     plt.plot(x, y_ideal, 'k--', linewidth=2, label='The original function (square wave)')
     plt.plot(x, y_approx, 'r-', label=f'Sum of basis functions (N={N})')
     plt.title(f'Using {N} basis function of sin(x)')

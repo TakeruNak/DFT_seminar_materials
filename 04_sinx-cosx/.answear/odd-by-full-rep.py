@@ -68,7 +68,8 @@ for k in range(N + 1):
 def approx_function(x):
     res = np.zeros_like(x)
     for k in range(N + 1):
-        res += a_coeffs[k] * basis_cos(x, k) + b_coeffs[k] * basis_sin(x, k)
+        # res += a_coeffs[k] * basis_cos(x, k) + b_coeffs[k] * basis_sin(x, k)
+        res += b_coeffs[k] * basis_sin(x, k)
     return res
 
 # グラフの描画設定

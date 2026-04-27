@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 # =========================
 # パラメータ
 # =========================
-t = 1.0
-U = 2.0
-A = 1.0
+t = -1.0
+U = 4.0
+A = 10.0
 
-max_iter = 100
-alpha = 0.7
+max_iter = 500
+alpha = 0.2
 tol = 1e-8
 
 n1, n2 = 1.0, 0.0

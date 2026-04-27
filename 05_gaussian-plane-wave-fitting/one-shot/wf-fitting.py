@@ -25,7 +25,7 @@ dx = x[1] - x[0]
 # Gaussian
 # =========================
 def gaussian(x, A=1.0, x0=0.0, sigma=1.0):
-    return A * np.exp(-(x - x0)**2 / (2 * sigma**2))
+    return A * np.exp(-(x - x0)**2 / (2 * sigma**2)) + 3.0 * np.exp(-(x - x0-5)**2 / (2 * sigma**2))
 
 g_x = gaussian(x)
 
@@ -39,6 +39,9 @@ def plane_wave_expand(E_cut):
 
     # allowed k (periodic box)
     n_max = int(np.floor(k_max * L / (2*np.pi)))
+    
+    print(f"Energy cutoff: {E_cut}, k_max: {k_max:.2f}, n_max: {n_max}")
+
     n_vals = np.arange(-n_max, n_max+1)
     k_vals = 2 * np.pi * n_vals / (2*L)
 
@@ -59,7 +62,7 @@ def plane_wave_expand(E_cut):
 # =========================
 # Convergence study
 # =========================
-E_list = [0.5]
+E_list = [20]
 errors = []
 
 plt.figure(figsize=(10, 6))

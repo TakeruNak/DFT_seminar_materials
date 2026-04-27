@@ -1,0 +1,47 @@
+! --- Comments ---
+! If you meet some question on QE parameters for PWscf, you better check the following url
+! https://www.quantum-espresso.org/Doc/INPUT_PW.html
+! ---------------
+
+&CONTROL ! Parameters settng for Computational conditions, especially in/out put
+  calculation = 'scf'
+  etot_conv_thr =   1.0000000000d-05 ! SCF convergence criteria for difference of Total Energy
+  forc_conv_thr =   1.0000000000d-04 ! SCF convergence criteria for difference of Maximum Force
+  outdir = './out/' ! Location of output file directory
+  prefix = 'graphene' ! Name of output-prefix
+  pseudo_dir = './' ! Location of pseudo potential file directory
+  tprnfor = .true.
+  tstress = .true.
+  verbosity = 'high'
+/
+&SYSTEM ! Parameters for systems
+  degauss =   0.01
+  ecutrho =   150
+  ecutwfc =   30
+  ibrav = 0
+  nat = 2
+  nosym = .false.
+  ntyp = 1
+  occupations = 'smearing'
+  smearing = 'cold'
+  nbnd = 16
+/
+&ELECTRONS ! Parameters related to the Electron information, SCF
+  conv_thr =   8.0000000000d-8
+  electron_maxstep = 80
+  mixing_beta =   4.0000000000d-01
+/
+ATOMIC_SPECIES ! Atomic Species in the system
+C  12.0107  C.pbe-n-kjpaw_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS crystal ! Coordinates in the unit cell
+C   0.0000000000000000    0.000000000000000  0.5
+C   0.3333333333333330    0.666666666666666  0.5
+
+K_POINTS automatic ! K Potint mesh information
+6 6 1 0 0 0
+
+CELL_PARAMETERS angstrom ! Unit cell information
+  2.460000   0.000000   0.000000
+ -1.230000   2.130000   0.000000
+  0.000000   0.000000  15.000000
