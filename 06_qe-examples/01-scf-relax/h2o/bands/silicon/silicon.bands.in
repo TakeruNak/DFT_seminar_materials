@@ -1,0 +1,6 @@
+&bands
+    outdir='./out/',
+    prefix='silicon',
+    filband='silicon.band'
+    lsym=.true.
+/

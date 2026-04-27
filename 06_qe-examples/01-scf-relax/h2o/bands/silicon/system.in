@@ -1,5 +1,5 @@
-NAME h2o
-CAL  relax
+NAME silicon
+CAL  bands
 NUM_PROCS 6
 
 # ============================================

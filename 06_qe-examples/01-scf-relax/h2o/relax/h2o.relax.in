@@ -1,5 +1,5 @@
 &CONTROL
-  calculation = 'scf'
+  calculation = 'relax'
   etot_conv_thr =   3.0000000000d-05
   forc_conv_thr =   1.0000000000d-04
   outdir = './out/'
@@ -9,6 +9,7 @@
   tstress = .true.
   verbosity = 'high'
 /
+
 &SYSTEM
   degauss =   2.0000000000d-02
   ecutrho =   4.8000000000d+02
@@ -25,15 +26,21 @@
   electron_maxstep = 80
   mixing_beta =   4.0000000000d-01
 /
+&ions
+/
+
 ATOMIC_SPECIES
 H      1.00794 H.pbe-rrkjus_psl.1.0.0.UPF
 O      15.9994 O.pbe-n-kjpaw_psl.0.1.UPF
+
 ATOMIC_POSITIONS crystal
 O     0.590849042         0.499110997         0.495674014
 H     0.562963963         0.427474022         0.436682045
 H     0.687638044         0.495526969         0.492722988
+
 K_POINTS automatic
 3 3 3 0 0 0
+
 CELL_PARAMETERS angstrom
        10.0000000000         0.0000000000         0.0000000000
         0.0000000000        10.0000000000         0.0000000000
