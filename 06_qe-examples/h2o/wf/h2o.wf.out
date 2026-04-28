@@ -1,5 +1,5 @@
 
-     Program POST-PROC v.7.5 starts on 27Apr2026 at 17: 2:22 
+     Program POST-PROC v.7.5 starts on 28Apr2026 at 13:45:40 
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
@@ -39,7 +39,7 @@
      Using Slab Decomposition
 
 
-     negative rho (up, down):  6.938E-04 0.000E+00
+     negative rho (up, down):  6.931E-04 0.000E+00
 
      Calling punch_plot, plot_num =   7
 
@@ -50,10 +50,10 @@
      Writing data to be plotted to file h2o_G3.cube
      Plot Type: 3D                     Output format: Gaussian cube
 
-     POST-PROC    :      2.38s CPU      2.57s WALL
+     POST-PROC    :      2.42s CPU      2.61s WALL
 
 
-   This run was terminated on:  17: 2:24  27Apr2026            
+   This run was terminated on:  13:45:43  28Apr2026            
 
 =------------------------------------------------------------------------------=
    JOB DONE.
