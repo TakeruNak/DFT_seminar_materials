@@ -1,0 +1,34 @@
+#!/usr/local/bin/gnuplot -persist
+# Last modified: 2016/02/18 18:10
+###--- terminal output ---###
+#set terminal x11 enhanced font "Times New Roman,18" # for external supercomputer
+set terminal qt enhanced font "Times New Roman,18"
+
+###--- eps output ---###
+#set terminal postscript eps enhanced color font "Times-New-Roman,24"
+#set terminal postscript eps enhanced monochrome font "Helvetica"
+#set terminal postscript eps enhanced color solid 28 lw 2
+#set output "dos.eps"
+
+###--- main gnuplot setting ---###
+set size ratio 2.0
+set xlabel 'Energy (eV)'
+ef = 6.7675    #Fermi energy
+set xrange [0:5]
+set noxtics 
+
+set yrange [-12:12]
+set ytics 5
+set mytics 5
+
+plot 'silicon.dos' using 2:($1-ef) title 'TDOS' w l #plot
+#plot_end
+pause-1
+
+###--- eps output ---###
+#set terminal postscript eps enhanced monochrome font "Helvetica,18"
+#set terminal postscript eps enhanced color font "Helvetica,18"
+#set output "dos.eps"
+set terminal pdfcairo font "Helvetica,18"
+set output "dos.pdf"
+replot

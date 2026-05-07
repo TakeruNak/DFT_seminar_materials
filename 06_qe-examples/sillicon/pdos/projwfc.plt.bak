@@ -1,0 +1,72 @@
+#!/usr/local/bin/gnuplot -persist
+# Last modified: 2016/02/18 18:10
+###--- terminal output ---###
+#set terminal x11 enhanced font "Times New Roman,18" # for external supercomputer
+set terminal qt enhanced font "Times New Roman,18"
+
+###--- eps output ---###
+#set terminal postscript eps enhanced color font "Times-New-Roman,24"
+#set terminal postscript eps enhanced monochrome font "Helvetica"
+#set terminal postscript eps enhanced color solid 28 lw 2
+#set output "pdos.eps"
+
+###--- main gnuplot setting ---###
+set size ratio 2.0
+set ylabel 'Energy (eV)'
+ef = 6.7675    #Fermi energy
+set xrange [0:1.2]
+set noxtics 
+set key outside
+
+set yrange [-12:10]
+set ytics 5
+set mytics 5
+
+# --- ファイル名の定義（見通しを良くするため） ---
+f1s = 'silicon.pdos.pdos_atm#1(Si)_wfc#1(s)'
+f2s = 'silicon.pdos.pdos_atm#2(Si)_wfc#1(s)'
+f1p = 'silicon.pdos.pdos_atm#1(Si)_wfc#2(p)'
+f2p = 'silicon.pdos.pdos_atm#2(Si)_wfc#2(p)'
+
+# --- プロット実行 ---
+# s軌道の和をプロット
+plot f1s using ($2 + column(2, f2s)):($1-ef) title 'Si s-total' with lines lw 2 lc rgb "blue", \
+     f1p using ($2 + column(2, f2p)):($1-ef) title 'Si p-total' with lines lw 2 lc rgb "red"
+# plot 'silicon.pdos.pdos_atm#1(Si)_wfc#1(s)' using 2:($1-ef) title 'title' w l #plot
+# replot 'silicon.pdos.pdos_atm#1(Si)_wfc#2(p)' using 2:($1-ef) title 'title' w l #plot
+# replot 'silicon.pdos.pdos_atm#2(Si)_wfc#1(s)' using 2:($1-ef) title 'title' w l #plot
+# replot 'silicon.pdos.pdos_atm#2(Si)_wfc#2(p)' using 2:($1-ef) title 'title' w l #plot
+#plot_end
+pause-1
+
+
+###--- pdf output ---###
+set term pdfcairo color enhanced size 4in, 3in font "Times New Roman,18"
+#set term pdfcairo monochrome enhanced size 4in, 3in font "Times New Roman,18"
+set output "projwfc.pdf"
+replot
+
+
+###--- eps output ---###
+# set terminal postscript eps enhanced monochrome font "Times New Roman,18"
+## set terminal postscript eps enhanced monochrome font "Helvetica,18"
+# #set terminal postscript eps enhanced color font "Times New Roman,18"
+## #set terminal postscript eps enhanced color font "Helvetica,18"
+# set output "projwfc.eps"
+# replot
+
+
+# ###--- total dos ---###
+# ###--- main gnuplot setting ---###
+# set terminal qt enhanced font "Times New Roman,18"
+# #tottal_dos
+# pause-1
+# 
+# ###--- eps output ---###
+# #set terminal postscript eps enhanced monochrome font "Times New Roman,18"
+## #set terminal postscript eps enhanced monochrome font "Helvetica,18"
+# set terminal postscript eps enhanced color font "Times New Roman,18"
+## set terminal postscript eps enhanced color font "Helvetica,18"
+# set output "total_pdos.eps"
+# replot
+

@@ -123,11 +123,11 @@ elif [ ${CAL} = "bands" ]; then      ### Band calculation ###
     echo ">> Start bands calculation"
     # mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.scf.in >${NAME}.scf.out
     # wait
-    # mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.nscf.in >${NAME}.nscf.out
-    # wait
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.nscf.in >${NAME}.nscf.out
+    wait
     mpirun -np ${NUM_PROCS} ${BANDS_COMMAND} < ${NAME}.bands.in >${NAME}.bands.out
-    # wait
-    # ./chbandplot_mac.sh ${NAME}
+    wait
+    ./chbandplot_mac.sh ${NAME}
     ###
 elif [ ${CAL} = "wf" ]; then        ### Wave function calculation ###
     ###

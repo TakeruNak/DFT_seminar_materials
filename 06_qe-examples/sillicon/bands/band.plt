@@ -40,7 +40,7 @@ ef = 6.7675    #Fermi energy
 
 set xrange [0:xmax]
 set yrange [ymin:ymax]
-set xtics ("{/Symbol G}" x1, "R" x2, "W" x3, "S" x4, "G" x5, "T" x6, "W" x7)
+set xtics ("{/Symbol G}" x1, "X" x2, "" x3, "U,K" x4, "{/Symbol G}" x5, "L" x6, "W" x7, "X" x8)
 set arrow 100 nohead from 0,0     to xmax,0  lt 3 lc rgb "#1a1a1a" dt '-'
 set arrow 1 nohead from x1,ymin to x1,ymax lt 2 lc rgb "#1a1a1a" dt '.'  #varr
 set arrow 2 nohead from x2,ymin to x2,ymax lt 2 lc rgb "#1a1a1a" dt '.'  #varr
@@ -62,7 +62,7 @@ pause -1
 #set output "bands.eps"
 #replot
 
-###--- pdf output ---###
-set term pdfcairo enhanced size 4in, 3in font "Times New Roman,18"
-set output "bands.pdf"
-replot
+# ###--- pdf output ---###
+# set term pdfcairo enhanced size 4in, 3in font "Times New Roman,18"
+# set output "bands.pdf"
+# replot

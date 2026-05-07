@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 
 NAME=$1  #name
 

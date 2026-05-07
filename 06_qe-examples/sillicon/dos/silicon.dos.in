@@ -1,0 +1,9 @@
+&DOS
+    prefix = 'silicon'
+    outdir = './out'
+    ngauss = 0
+    degauss = 0.01
+    DeltaE = 0.01
+/
+
+! reference: https://www.quantum-espresso.org/Doc/INPUT_DOS.html
