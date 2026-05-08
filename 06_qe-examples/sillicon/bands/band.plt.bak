@@ -27,11 +27,11 @@ ry = 1.0 #13.60569193
 x1 = 0.0000    #coord
 x2 = 0.7071    #coord
 x3 = 0.9571    #coord
-x4 = 0.9571    #coord
-x5 = 1.7071    #coord
-x6 = 2.3195    #coord
-x7 = 2.8195    #coord
-x8 = 3.1730    #coord
+x4 = 1.3901    #coord
+x5 = 2.1401    #coord
+x6 = 2.7525    #coord
+x7 = 3.2525    #coord
+x8 = 3.6060    #coord
 xmax = x8      #coord
 #coord_end
 ymin = -12 #20.83997

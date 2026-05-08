@@ -3,6 +3,7 @@
 PW_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pw.x
 PP_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pp.x
 BANDS_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/bands.x
+PROJWFC_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/projwfc.x
 # UTILITY_COMMAND=/Users/takerunakashima/workspace/src/QE/utulity/
 
 if [ -e system.in ]; then
@@ -121,8 +122,8 @@ elif [ ${CAL} = "vc-relax" ]; then      ### relaxation of inner and lattice stru
 elif [ ${CAL} = "bands" ]; then      ### Band calculation ###
     ###
     echo ">> Start bands calculation"
-    mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.scf.in >${NAME}.scf.out
-    wait
+    # mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.scf.in >${NAME}.scf.out
+    # wait
     mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.nscf.in >${NAME}.nscf.out
     wait
     mpirun -np ${NUM_PROCS} ${BANDS_COMMAND} < ${NAME}.bands.in >${NAME}.bands.out
@@ -181,11 +182,11 @@ elif [ ${CAL} = "wannier" ]; then   ### Maximally localized Wannier function cal
 elif [ ${CAL} = "proj" ]; then   ### Projection wave function ###
     ###
     echo ">> Start projection calculation"
-    # mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
-    # wait
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
+    wait
     mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.nscf.in >${NAME}.nscf.out
     wait
-    mpirun -np ${NUM_PROCS} projwfc.x -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
+    mpirun -np ${NUM_PROCS} ${PROJWFC_COMMAND} -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
     wait
     ./chprojwfcplot_mac.sh ${NAME}
     ###
