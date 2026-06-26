@@ -3,11 +3,11 @@
     outdir = './out'
     plot_num = 7
     kpoint=1
-    kband=3
+    kband=2
     lsign=.true.
 /
 &plot
     iflag=3
     output_format=6
-    fileout='h2o_G3.cube'
+    fileout='h2o_G2.cube'
 /

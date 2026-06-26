@@ -111,7 +111,7 @@ elif [ ${CAL} = "stm_cc" ]; then      ### constant-current calculation ###
 elif [ ${CAL} = "relax" ]; then      ### relaxation of inner structure calculation ###
     ###
     echo ">> Start relax calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.relax.in >${NAME}.relax.out 
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} < ${NAME}.relax.in >${NAME}.relax.out 
     ###
 elif [ ${CAL} = "vc-relax" ]; then      ### relaxation of inner and lattice structure calculation ###
     ###
@@ -132,8 +132,8 @@ elif [ ${CAL} = "bands" ]; then      ### Band calculation ###
 elif [ ${CAL} = "wf" ]; then        ### Wave function calculation ###
     ###
     echo ">> Start wf calculation"
-    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
-    wait
+    # mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
+    # wait
     mpirun -np ${NUM_PROCS} ${PP_COMMAND} -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
     ###
 elif [ ${CAL} = "cd" ]; then        ### charge density calculation ###
