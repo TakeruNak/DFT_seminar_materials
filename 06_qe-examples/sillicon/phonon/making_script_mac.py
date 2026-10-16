@@ -7,7 +7,8 @@ f.write('\
 #NUM_PROCS=8\n\
 #\n\
 \n\
-PW_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pw.x \n\
+QE_BIN_DIR=${QE_BIN_DIR:-}\n\
+PW_COMMAND=${QE_BIN_DIR:+${QE_BIN_DIR}/}pw.x\n\
 \n\
 if [ -e system.in ]; then\n\
     echo ">>> READ system.in"\n\

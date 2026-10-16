@@ -48,13 +48,18 @@
 grep '!'                      *.out   # 収束した全エネルギー
 grep 'estimated scf accuracy' *.out   # SCF 残差の推移
 grep 'Total force'            *.out   # 残留力
-grep 'Fermi'                  *.out   # Fermi 準位
-grep 'highest occupied'       *.out   # HOMO / LUMO
+grep -i 'Fermi'               *.out   # Fermi 準位
 grep 'number of k points'     *.out   # k 点数
+grep -A6 'End of self-consistent calculation' *.out  # 固有値 (eV)
 grep -A5 'ATOMIC_POSITIONS'   *.out   # 構造（relax 系）
 grep 'PWSCF.*WALL'            *.out   # 計算時間
-grep -i 'error\|Error'        *.out   # エラー
+grep -c 'JOB DONE'            *.out   # 正常終了したか（1 なら OK）
+grep -i 'error'               *.out   # エラー
 ```
+
+> 本リポジトリの例題は全て `occupations = 'smearing'` なので HOMO/LUMO は
+> `the Fermi energy is ...` と固有値の列から判断する。
+> `highest occupied level` は `occupations = 'fixed'` のときだけ出る表記。
 
 ### 主要パラメータ
 
@@ -129,6 +134,7 @@ grep -i 'error\|Error'        *.out   # エラー
 | OpenBabel | 構造ファイル変換 | `brew install open-babel` |
 | gnuplot | band / DOS のプロット | `brew install gnuplot` |
 | GNU sed | プロット整形スクリプトが依存 | `brew install gnu-sed` |
+| phonopy | フォノン計算（3-8） | `pip install "phonopy<4"` |
 
 ```bash
 obabel input.sdf -O output.xyz --gen3d     # sdf → xyz
@@ -146,10 +152,13 @@ open -a VESTA output.xyz
 |---|---|
 | `pw.x が見つかりません` | `which pw.x` を確認。無ければ `export QE_BIN_DIR=<QE の bin>` |
 | `command not found: gsed` | `brew install gnu-sed` |
+| `command not found: gnuplot` | `brew install gnuplot` |
 | `ModuleNotFoundError: numpy` | `source .venv/bin/activate` を忘れていないか確認 |
 | `ModuleNotFoundError: pythtb` | `pip install pythtb pymatgen` |
-| `TBModel` が import できない | pythtb を最新版に更新（`pip install -U pythtb`） |
+| `TBModel` が import できない | pythtb 2.0 以降が必要（`pip install -U pythtb`） |
 | matplotlib のウィンドウが出ない | `plt.show()` の代わりに `plt.savefig()` を使う |
+| `'-d' is a setup operation that moved to 'phonopy-init' in v4` | phonopy 4 が入っている。`pip install "phonopy<4"` |
+| gnuplot が終了しない | `.plt` 内の `pause -1` の仕様。Terminal で Enter を押す |
 
 ### QE の実行エラー
 
@@ -162,6 +171,9 @@ open -a VESTA output.xyz
 | メモリ不足 / 異常終了 | `NUM_PROCS` を減らす ／ `ecutwfc`, k 点を下げて小さく試す |
 | `mpirun` が無い | `brew install open-mpi`、または conda の QE を使う |
 | 2 回目の実行結果がおかしい | `rm -rf out/` してやり直す |
+| `fatal error reading xml file`（pp.x / projwfc.x） | SCF を先に流していない。`out/` が空なら `CAL scf` から実行する |
+| `file ... .UPF not found` で絶対パスが出る | input の `pseudo_dir` が他人の環境のまま。`'./pseudo/'` などに直す |
+| `Minimization algorithm failed to find Fermi energy` | 警告であってエラーではない（二分法に切り替わっただけ） |
 
 ### SCF が収束しないときの定石
 

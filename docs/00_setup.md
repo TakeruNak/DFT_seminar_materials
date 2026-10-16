@@ -154,23 +154,36 @@ make all -j4          # 30分〜1時間程度
 ### 実行パスの設定
 
 本リポジトリの `run-local.sh` は **既定で PATH 上の `pw.x` を探す**。
-ビルドした場合など PATH に無いときだけ、環境変数を設定する。
+ビルドした場合など PATH に無いときだけ、環境変数 `QE_BIN_DIR` を設定する。
 
 ```bash
-# 例: ソースビルドした場合
+# 例1) ソースビルドした場合
 echo 'export QE_BIN_DIR=$HOME/workspace/q-e-qe-7.5/bin' >> ~/.zshrc
+# 例2) bin を 1 箇所に symlink でまとめている場合
+echo 'export QE_BIN_DIR=$HOME/opt/bin' >> ~/.zshrc
+
 source ~/.zshrc
 ```
 
 動作確認:
 
 ```bash
-which pw.x                    # または
-ls $QE_BIN_DIR/pw.x
+pw.x -h | head -3             # PATH にある場合
+ls $QE_BIN_DIR/pw.x           # QE_BIN_DIR を使う場合
 mpirun --version
 ```
 
 > `pw.x が見つかりません` と出たら、`QE_BIN_DIR` の設定を確認する。
+> `run-local.sh` は実行前に `pw.x` の有無を確認し、無ければその場で止まる。
+
+### MPI
+
+`run-local.sh` は `mpirun` を使う。無ければ `brew install open-mpi`。
+`system.in` の `NUM_PROCS` は **自分のマシンの物理コア数以下** にすること。
+
+```bash
+sysctl -n hw.physicalcpu      # 物理コア数を確認
+```
 
 ---
 

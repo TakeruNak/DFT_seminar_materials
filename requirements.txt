@@ -3,9 +3,13 @@ numpy
 scipy
 matplotlib
 
-# 演習 08 (TB_model) に必要
-pythtb
+# 演習 05 (TB_model) に必要
+pythtb>=2.0
 pymatgen
+
+# 演習 03-8 (フォノン計算) に必要
+# phonopy 4 以降は CLI が非互換（-d/-f/-c が phonopy-init に移動）なので 3 系に固定
+phonopy<4
 
 # 構造ファイル操作（任意）
 ase

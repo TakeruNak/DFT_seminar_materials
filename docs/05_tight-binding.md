@@ -40,6 +40,16 @@ python test.py
 ```
 
 > `test.py` が動作する本体。`graphene.py` はテンプレート（import のみ）。
+> `pythtb` は **2.0 以降**が必要（`TBModel` / `Lattice` API を使う）。
+> `pymatgen` は CIF 出力のコメント部分でのみ使うが、import されるので必要。
+
+**動作確認済み**（pythtb 2.0.0 / 実行 10 秒程度）
+
+| 項目 | 値 |
+|---|---|
+| バンド幅 | 約 17 eV ≈ 6\|t\| = 16.8 eV |
+| K 点 | 2 本のバンドが 0 eV で縮退（**Dirac point**） |
+| PDOS(A) と PDOS(B) | 完全に一致 |
 
 ### 出力
 

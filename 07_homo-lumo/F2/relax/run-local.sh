@@ -150,8 +150,8 @@ elif [ ${CAL} = "bands" ]; then      ### Band calculation ###
 elif [ ${CAL} = "wf" ]; then        ### Wave function calculation ###
     ###
     echo ">> Start wf calculation"
-    # mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
-    # wait
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
+    wait
     mpirun -np ${NUM_PROCS} ${PP_COMMAND} -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
     ###
 elif [ ${CAL} = "cd" ]; then        ### charge density calculation ###

@@ -33,6 +33,9 @@ Institute of Science Tokyo / CLS Tateyama-Ando Group 内セミナー
 
 - [コマンド早見表・外部ツール・トラブルシュート](docs/90_reference.md)
 
+> 全演習は **QE 7.5 / Open MPI 5.0.9 / phonopy 3.5.1 / pythtb 2.0.0 / macOS (Apple Silicon)**
+> で実行確認済み。各章に参照値と実測時間を載せてあるので、自分の結果と突き合わせること。
+
 ---
 
 ## 理論的な前提（セミナーで扱う範囲）

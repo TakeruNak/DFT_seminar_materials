@@ -9,6 +9,16 @@ modified-date: 2025-09-03
 # The calculation flow of phonopy; post process after QE
 reference is [phonopy v.2.17.0](https://phonopy.github.io/phonopy/qe.html)
 
+> **NOTE (verified 2026-10-16)**
+> This flow assumes the **phonopy 3.x or earlier** CLI.
+> In phonopy 4, the setup operations `-d`, `-f` and `-c` were moved to a separate
+> command `phonopy-init`, so the commands below fail with
+> `'-d' is a setup operation that moved to 'phonopy-init' in v4`.
+> Install `pip install "phonopy<4"` (verified with 3.5.1).
+>
+> The QE binary used by `phonopy_mac.sh` is resolved from `PATH`;
+> set `QE_BIN_DIR` to override.
+
 1. Read a QE-PW input file and create supercells with --qe option:
     ```
     phonopy --qe -d --dim="2 2 2" -c *.scf.in

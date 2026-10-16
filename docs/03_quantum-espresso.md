@@ -97,11 +97,26 @@ cat system.in            # NAME h2o / CAL scf
 
 ```bash
 grep '!' h2o.scf.out                      # 全エネルギー（収束値）
-grep 'total energy' h2o.scf.out | head    # SCF 各 step のエネルギー
 grep 'estimated scf accuracy' h2o.scf.out # 残差の推移
-grep 'highest occupied' h2o.scf.out       # HOMO / LUMO
+grep -i 'Fermi' h2o.scf.out               # Fermi 準位
 grep 'Total force' h2o.scf.out            # 残留力
+grep -A6 'End of self-consistent calculation' h2o.scf.out   # 固有値 (eV)
 ```
+
+> 本リポジトリの例題は全て `occupations = 'smearing'` なので、QE は
+> `the Fermi energy is ...` と出力する。`highest occupied level` は
+> `occupations = 'fixed'` のときだけ出る表記なので grep しても何も出ない。
+
+**動作確認済みの参照値**（QE 7.5 / 6 MPI / 実行 20 秒）
+
+| 項目 | 値 |
+|---|---|
+| 全エネルギー | `-44.04045673 Ry` |
+| Fermi 準位 | `-4.1193 eV` |
+| 固有値 (eV) | `-25.1858 -12.9610 -9.2120 -7.1077 -0.9506 0.4281 0.7307 1.0887` |
+| 残留力 | `0.004066` |
+
+同じ値が出れば環境は正しく動いている。
 
 ### 課題
 
@@ -141,9 +156,19 @@ grep '!' h2o.relax.out                                 # 各 step の全エネ�
 
 最適化後の構造は `h2o.relax.vasp` として保存されている。
 
+**動作確認済みの参照値**（6 MPI / 実行 1 分）
+
+| 項目 | 値 | 実験値 |
+|---|---|---|
+| 全エネルギー | `-44.04046586 Ry` | — |
+| O–H 結合長 | 0.970 Å | 0.958 Å |
+| H–O–H 結合角 | 104.2° | 104.5° |
+| 最終 Total force | `0.000152` | — |
+
 ### 課題
 
 1. 最適化前後の O–H 結合長と H–O–H 結合角を計算し、実験値（0.958 Å, 104.5°）と比較する
+   （座標は分率座標。セルは 10 Å の立方体なので、差に 10 を掛ければ Å になる）
 2. `forc_conv_thr` を 1e-4 → 1e-3 に緩めると step 数と最終構造がどう変わるか
 
 ---
@@ -184,7 +209,10 @@ open -a VESTA h2o_G2.cube
 2. H₂O の価電子数から HOMO が何番目のバンドか求め、HOMO / LUMO を特定する
 3. `wf_png/` の既存結果と比較する
 
+**動作確認済み**（6 MPI / 実行 1 分）: `h2o_G2.cube`（約 32 MB）が生成される。
+
 > `.cube` は巨大（数十 MB）なので `.gitignore` 済み。commit しないこと。
+> `pp.x` は中間ファイル `tmp.pp` も作る。これも数十 MB になる。
 
 ---
 
@@ -199,6 +227,8 @@ cd 06_qe-examples/graphene/scf
 ./run-local.sh
 grep '!' graphene.scf.out
 ```
+
+**動作確認済み**（4 MPI / 実行 2 秒）: 全エネルギー `-36.86820864 Ry`, Fermi 準位 `-1.6568 eV`
 
 ポイント:
 
@@ -226,6 +256,17 @@ cd ../scf
 ./run-local.sh
 ```
 
+**動作確認済み**
+
+| 計算 | 時間 (8 MPI) | 結果 |
+|---|---|---|
+| `vc-relax` | 4 分 30 秒 | a = 2.4673 Å, c = 7.9009 Å → **層間距離 3.95 Å** |
+| `scf` | 9 秒 | 全エネルギー `-73.77286739 Ry` |
+
+> `scf` の出力に `Minimization algorithm failed to find Fermi energy: reverting to
+> bisection` が出るが、これは警告であってエラーではない（半金属的で Fermi 準位の
+> 探索が難しいため、より頑健な二分法に切り替えたという意味）。
+
 ### 課題
 
 1. graphene の `K_POINTS` を `3 3 1` / `6 6 1` / `12 12 1` と変えて全エネルギーを比較する
@@ -247,11 +288,26 @@ SCF (pw.x) → NSCF: calculation='bands' (pw.x) → bands.x → gnuplot
 ```bash
 cd 06_qe-examples/sillicon/bands
 ./run-local.sh           # CAL bands。最後に chbandplot_mac.sh が band.plt を整形
-gnuplot band.plt         # bands.pdf も生成される
+gnuplot band.plt         # 描画ウィンドウが開く
 ```
 
 > `chbandplot_mac.sh` は **`gsed`（GNU sed）** に依存する。
 > 無い場合は `brew install gnu-sed`。
+
+`chbandplot_mac.sh` は `silicon.scf.out` から Fermi 準位を読み、`band.plt` の
+`ef = ...` 行と k 点座標・縦線を自動で書き換える。
+
+**PDF で保存したい場合**は `band.plt` 末尾の 3 行のコメントを外す
+（`dos.plt` / `projwfc.plt` と違い、`band.plt` は既定で PDF を出さない）。
+
+```gnuplot
+set term pdfcairo enhanced size 4in, 3in font "Times New Roman,18"
+set output "bands.pdf"
+replot
+```
+
+> `band.plt` の途中に `pause -1` があるため、ウィンドウが出たあと
+> Terminal で **Enter を押すまで gnuplot は終了しない**。
 
 ### バンドパス
 
@@ -259,11 +315,23 @@ gnuplot band.plt         # bands.pdf も生成される
 パスは結晶の対称性で決まる。自分の系で調べるときは
 [SeeK-path](https://www.materialscloud.org/work/tools/seekpath) を使う。
 
+**動作確認済み**（6 MPI / 実行 6 秒）
+
+| 項目 | 値 |
+|---|---|
+| Fermi 準位 | `6.7675 eV` |
+| VBM (Γ) | `6.3959 eV` |
+| CBM (X 近傍) | `7.0704 eV` |
+| **間接ギャップ** | **0.67 eV**（実験値 1.17 eV） |
+
 ### 課題
 
-1. `bands.pdf` を開き、Si のバンドギャップを読み取る。実験値（1.17 eV）と比較する
+1. `silicon.band.gnu` から Si のバンドギャップを読み取り、実験値（1.17 eV）と比較する
 2. PBE/LDA がバンドギャップを過小評価する理由を調べる
-3. `silicon.nscf.in` の `nbnd` を増やし、より高いバンドまで描く
+3. 既定のパスは 1 区間あたり 2 点しか取っていないため、バンドが折れ線に見える。
+   `silicon.nscf.in` の `K_POINTS crystal_b` の各行末の数字（区間の分割数）を
+   20 程度に増やして滑らかなバンド図にする
+4. `silicon.nscf.in` の `nbnd` を増やし、より高いバンドまで描く
 
 ---
 
@@ -277,10 +345,16 @@ SCF (pw.x) → NSCF 密なメッシュ (pw.x) → dos.x → gnuplot
 
 ```bash
 cd 06_qe-examples/sillicon/dos
-./run-local.sh              # CAL dos
+./run-local.sh              # CAL dos  ★ 7〜8 分かかる
 ./chdosplot_mac.sh silicon  # Fermi 準位を dos.plt に書き込む
-gnuplot dos.plt             # dos.pdf 生成
+gnuplot dos.plt             # 描画 + dos.pdf を自動生成（Enter で終了）
 ```
+
+> **時間がかかる理由**: NSCF の `K_POINTS automatic` が `50 50 50` で、
+> 既約 k 点が 11050 点になるため。試すだけなら `20 20 20` に落としてよい。
+
+**動作確認済み**（6 MPI / 実行 7 分 23 秒）: `silicon.dos` と `dos.pdf` が生成される。
+Fermi 準位 `6.7675 eV`。
 
 ### 課題
 
@@ -302,25 +376,38 @@ gnuplot dos.plt             # dos.pdf 生成
 ```bash
 cd 06_qe-examples/sillicon/pdos
 
-# 1) まず SCF を実行
+# 1) まず SCF を実行（4 秒）
 sed -i '' 's/^CAL  proj/CAL  scf/' system.in
 ./run-local.sh
 
-# 2) PDOS を実行
+# 2) PDOS を実行（★ 3〜4 分。NSCF が 50x50x50 メッシュのため）
 sed -i '' 's/^CAL  scf/CAL  proj/' system.in
 ./run-local.sh
 
-# 3) プロット
-gnuplot projwfc.plt          # projwfc.pdf 生成
+# 3) プロット（projwfc.pdf を自動生成。Enter で終了）
+gnuplot projwfc.plt
 ```
+
+> `run-local.sh` の `proj` 分岐は最後に `chprojwfcplot_mac.sh` を呼び、
+> 生成された `*pdos_atm*` ファイルを `projwfc.plt` の plot 行に自動で並べる。
 
 出力される `silicon.pdos.pdos_atm#1(Si)_wfc#1(s)` などが射影成分。
 
+**動作確認済み**（6 MPI / SCF 4 秒 + PROJ 3 分 40 秒）
+
+| 項目 | 値 |
+|---|---|
+| SCF 全エネルギー | `-22.83713469 Ry` |
+| 生成ファイル | `pdos_atm#1(Si)_wfc#1(s)`, `#wfc#2(p)`, 原子 2 の同様分, `pdos_tot` |
+| プロット | `projwfc.pdf` |
+
 ### 課題
 
-1. `projwfc.plt` のコメントアウトを外し、Si-3s と Si-3p の寄与を重ねて描く
+1. `chprojwfcplot_mac.sh` が入れる凡例は全て `title 'title'` になっている。
+   `projwfc.plt` を編集して `Si-3s` / `Si-3p` など意味のある凡例に直す
 2. 価電子帯の上端・伝導帯の下端がそれぞれ主に s/p のどちらかを判定する
-3. `silicon.pdos.pdos_tot` と DOS（3-6）が一致することを確認する
+3. `projwfc.plt` のコメントアウトを外し、`silicon.pdos.pdos_tot` と
+   DOS（3-6）が一致することを確認する
 
 ---
 
@@ -330,32 +417,87 @@ gnuplot projwfc.plt          # projwfc.pdf 生成
 
 phonopy を用いた有限変位法。**余裕がある場合のみ。**
 
+### phonopy のバージョン（重要）
+
+本ディレクトリのスクリプトと [`howtouse.md`](../06_qe-examples/sillicon/phonon/howtouse.md)
+は **phonopy 3 系以前の CLI** を前提にしている。
+phonopy 4 以降は `-d` / `-f` / `-c` が別コマンド `phonopy-init` に移動しており、
+そのままでは動かない。
+
 ```bash
-pip install phonopy
+pip install "phonopy<4"          # 3.5.1 で動作確認済み
 ```
 
-手順は同ディレクトリの [`howtouse.md`](../06_qe-examples/sillicon/phonon/howtouse.md) に従う。
+### 手順（動作確認済み）
 
+```bash
+cd 06_qe-examples/sillicon/phonon
+
+# 1) 2x2x2 supercell と変位パターンを生成
+phonopy --qe -d --dim="2 2 2" -c silicon.scf.in
+#   → supercell-001.in, phonopy_disp.yaml
+
+# 2) header.in の nat を supercell の原子数に合わせる（既定は nat = 16 で一致）
+#    その上で QE input を組み立てる
+./attach_header_mac.sh           # → silicon-001.in
+python making_script_mac.py      # → phonopy_mac.sh
+
+# 3) 各 supercell の SCF（★ 8〜9 分）
+chmod +x phonopy_mac.sh
+./phonopy_mac.sh                 # → silicon-001.out
+
+# 4) 力定数
+phonopy -f silicon-001.out       # → FORCE_SETS
+
+# 5) バンド
+phonopy --qe -c silicon.scf.in -p band.conf          # → band.yaml
+phonopy-bandplot --gnuplot band.yaml > gnuplot_band.dat
+
+# 6) PDOS
+phonopy -p pdos.conf             # → projected_dos.dat
 ```
-phonopy --qe -d --dim="2 2 2" -c *.scf.in   # supercell 生成
-→ header.in の nat を修正 → ./attach_header_mac.sh
-→ python making_script_mac.py → ./phonopy_*.sh
-→ phonopy -f *.out                           # 力定数
-→ phonopy --qe -c *.scf.in -p band.conf      # band plot
-```
+
+**動作確認済み**（phonopy 3.5.1, QE 7.5, 6 MPI）
+
+| 項目 | 値 |
+|---|---|
+| supercell | 16 原子 / 変位パターン 1 個 / 空間群 Fd-3m (227) |
+| supercell SCF | 8 分 36 秒 |
+| フォノン周波数 | 0.00 〜 **15.28 THz**（実験の光学モード ≈ 15.5 THz） |
+
+### 課題
+
+1. `band.conf` の `BAND` を書き換えて別のパスで分散を描く
+2. `--dim="2 2 2"` を `"3 3 3"` にすると何が改善するか（計算時間は大幅に増える）
+3. Γ 点の音響モードが 0 になっているか確認する（なっていなければ力定数が不正確）
 
 ---
 
 ## まとめ
 
-| 計算 | `CAL` | 主な出力 | 対応する物理量 |
-|---|---|---|---|
-| SCF | `scf` | `*.scf.out` | 全エネルギー、電荷密度 |
-| 構造最適化 | `relax` / `vc-relax` | `*.vasp` | 平衡構造、格子定数 |
-| 波動関数 | `wf` | `*.cube` | Kohn-Sham 軌道 |
-| バンド | `bands` | `*.band.gnu`, `bands.pdf` | 分散関係、バンドギャップ |
-| DOS | `dos` | `*.dos`, `dos.pdf` | 状態密度 |
-| PDOS | `proj` | `*.pdos_atm#*`, `projwfc.pdf` | 軌道別寄与 |
+| 節 | 系 | `CAL` | 主な出力 | 実測時間 |
+|---|---|---|---|---|
+| 3-1 | H₂O | `scf` | `*.scf.out` | 20 秒 |
+| 3-2 | H₂O | `relax` | `*.relax.vasp` | 1 分 |
+| 3-3 | H₂O | `wf` | `*.cube` | 1 分 |
+| 3-4 | graphene | `scf` / `wf` | `*.scf.out`, `*.cube` | 2 秒 |
+| 3-4 | graphite | `vc-relax` / `scf` | 最適化セル | 4 分 30 秒 / 9 秒 |
+| 3-5 | silicon | `bands` | `*.band.gnu` → `bands.pdf` | 6 秒 |
+| 3-6 | silicon | `dos` | `*.dos` → `dos.pdf` | 7 分 23 秒 |
+| 3-7 | silicon | `proj` | `*.pdos_atm#*` → `projwfc.pdf` | 3 分 44 秒 |
+| 3-8 | silicon | （phonopy） | `band.yaml`, `projected_dos.dat` | 8 分 36 秒 |
+
+時間はいずれも **Apple Silicon / 6 MPI（graphite のみ 8 MPI）** での実測値。
+
+### PDF が自動生成されるかどうか
+
+| スクリプト | PDF 自動生成 |
+|---|---|
+| `dos.plt` | ○ `dos.pdf` |
+| `projwfc.plt` | ○ `projwfc.pdf` |
+| `band.plt` | **×** 末尾 3 行のコメントを外す必要がある |
+
+3 つとも途中に `pause -1` があるので、**Terminal で Enter を押すまで終了しない**。
 
 ### 収束テストの 3 本柱（研究で必ずやること）
 

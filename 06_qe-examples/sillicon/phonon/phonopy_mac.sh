@@ -3,7 +3,8 @@
 #NUM_PROCS=8
 #
 
-PW_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pw.x 
+QE_BIN_DIR=${QE_BIN_DIR:-}
+PW_COMMAND=${QE_BIN_DIR:+${QE_BIN_DIR}/}pw.x
 
 if [ -e system.in ]; then
     echo ">>> READ system.in"
