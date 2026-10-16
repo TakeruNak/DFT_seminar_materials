@@ -1,6 +1,6 @@
 # Appendix: cheat sheets, external tools, troubleshooting
 
-*English ・ [🌐 日本語](../ja/90_reference.md)*
+*English ・ [日本語](../ja/90_reference.md) ・ [简体中文](../zh/90_reference.md)*
 
 [← 05. Tight-binding](05_tight-binding.md) | [Index](README.md)
 

@@ -1,6 +1,6 @@
 # DFT Seminar Manual (English)
 
-[🌐 Language / 言語選択](../../README.md) ・ [日本語](../ja/README.md)
+[🌐 Language](../../README.md) ・ English ・ [日本語](../ja/README.md) ・ [简体中文](../zh/README.md)
 
 Hands-on exercise manual for the internal seminar
 **"Density Functional Theory — Theory and Calculation"**
@@ -75,7 +75,8 @@ DFT_seminar_materials/
 ├── requirements.txt                 Python dependencies
 ├── docs/
 │   ├── en/                          English manual (this directory)
-│   └── ja/                          Japanese manual
+│   ├── ja/                          Japanese manual
+│   └── zh/                          Simplified Chinese manual
 ├── 00_environment/                  vim / tmux configuration examples
 ├── 01_2-site-convergence/           exercise 01
 ├── 02_2-site-KSeq-convergence/      exercise 02

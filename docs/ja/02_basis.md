@@ -1,6 +1,6 @@
 # 02. 基底関数と完備性
 
-*[🌐 English](../en/02_basis.md) ・ 日本語*
+*[English](../en/02_basis.md) ・ 日本語 ・ [简体中文](../zh/02_basis.md)*
 
 [← 01. 自己無撞着場](01_scf.md) | [目次](README.md) | [次へ：03. Quantum ESPRESSO →](03_quantum-espresso.md)
 

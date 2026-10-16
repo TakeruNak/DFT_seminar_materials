@@ -1,6 +1,6 @@
 # 03. Quantum ESPRESSO
 
-*English ・ [🌐 日本語](../ja/03_quantum-espresso.md)*
+*English ・ [日本語](../ja/03_quantum-espresso.md) ・ [简体中文](../zh/03_quantum-espresso.md)*
 
 [← 02. Basis sets](02_basis.md) | [Index](README.md) | [Next: 04. HOMO-LUMO →](04_homo-lumo.md)
 

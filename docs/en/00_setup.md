@@ -1,6 +1,6 @@
 # 00. Environment setup
 
-*English ・ [🌐 日本語](../ja/00_setup.md)*
+*English ・ [日本語](../ja/00_setup.md) ・ [简体中文](../zh/00_setup.md)*
 
 [← Back to index](README.md) | [Next: 01. Self-consistent field →](01_scf.md)
 

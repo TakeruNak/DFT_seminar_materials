@@ -1,6 +1,6 @@
 # DFT セミナー演習マニュアル（日本語）
 
-[🌐 Language / 言語選択](../../README.md) ・ [English](../en/README.md)
+[🌐 Language](../../README.md) ・ [English](../en/README.md) ・ 日本語 ・ [简体中文](../zh/README.md)
 
 Institute of Science Tokyo / CLS Tateyama-Ando Group 内セミナー
 **「密度汎関数理論（理論概略・計算）」** の演習マニュアル。
@@ -67,11 +67,12 @@ Many-Body Schrödinger eq.   HΦ = EΦ        ← 直接解くのは計算量的
 
 ```
 DFT_seminar_materials/
-├── README.md                       ← 言語選択ページ
+├── README.md                       ← 言語選択ページ（英語）
 ├── requirements.txt                 Python 依存パッケージ
 ├── docs/
+│   ├── en/                          English manual
 │   ├── ja/                          日本語マニュアル（このディレクトリ）
-│   └── en/                          English manual
+│   └── zh/                          简体中文手册
 ├── 00_environment/                  vim / tmux の設定例
 ├── 01_2-site-convergence/           演習 01
 ├── 02_2-site-KSeq-convergence/      演習 02

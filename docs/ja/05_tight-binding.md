@@ -1,6 +1,6 @@
 # 05. Tight-binding モデル（graphene）
 
-*[🌐 English](../en/05_tight-binding.md) ・ 日本語*
+*[English](../en/05_tight-binding.md) ・ 日本語 ・ [简体中文](../zh/05_tight-binding.md)*
 
 [← 04. HOMO-LUMO](04_homo-lumo.md) | [目次](README.md) | [付録：早見表 →](90_reference.md)
 

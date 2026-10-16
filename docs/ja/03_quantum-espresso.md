@@ -1,6 +1,6 @@
 # 03. Quantum ESPRESSO 入門
 
-*[🌐 English](../en/03_quantum-espresso.md) ・ 日本語*
+*[English](../en/03_quantum-espresso.md) ・ 日本語 ・ [简体中文](../zh/03_quantum-espresso.md)*
 
 [← 02. 基底関数](02_basis.md) | [目次](README.md) | [次へ：04. HOMO-LUMO →](04_homo-lumo.md)
 

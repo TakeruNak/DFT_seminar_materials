@@ -1,6 +1,6 @@
 # 01. 自己無撞着場（SCF）
 
-*[🌐 English](../en/01_scf.md) ・ 日本語*
+*[English](../en/01_scf.md) ・ 日本語 ・ [简体中文](../zh/01_scf.md)*
 
 [← 00. 環境構築](00_setup.md) | [目次](README.md) | [次へ：02. 基底関数 →](02_basis.md)
 

@@ -1,6 +1,6 @@
 # 00. 環境構築
 
-*[🌐 English](../en/00_setup.md) ・ 日本語*
+*[English](../en/00_setup.md) ・ 日本語 ・ [简体中文](../zh/00_setup.md)*
 
 [← 目次に戻る](README.md) | [次へ：01. 自己無撞着場 →](01_scf.md)
 

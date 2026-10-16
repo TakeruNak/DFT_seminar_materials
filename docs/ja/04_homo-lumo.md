@@ -1,6 +1,6 @@
 # 04. HOMO-LUMO 解析（F₂ 分子）
 
-*[🌐 English](../en/04_homo-lumo.md) ・ 日本語*
+*[English](../en/04_homo-lumo.md) ・ 日本語 ・ [简体中文](../zh/04_homo-lumo.md)*
 
 [← 03. Quantum ESPRESSO](03_quantum-espresso.md) | [目次](README.md) | [次へ：05. Tight-binding →](05_tight-binding.md)
 

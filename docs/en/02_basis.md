@@ -1,6 +1,6 @@
 # 02. Basis sets and completeness
 
-*English ・ [🌐 日本語](../ja/02_basis.md)*
+*English ・ [日本語](../ja/02_basis.md) ・ [简体中文](../zh/02_basis.md)*
 
 [← 01. Self-consistent field](01_scf.md) | [Index](README.md) | [Next: 03. Quantum ESPRESSO →](03_quantum-espresso.md)
 

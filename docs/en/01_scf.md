@@ -1,6 +1,6 @@
 # 01. Self-consistent field (SCF)
 
-*English ・ [🌐 日本語](../ja/01_scf.md)*
+*English ・ [日本語](../ja/01_scf.md) ・ [简体中文](../zh/01_scf.md)*
 
 [← 00. Environment setup](00_setup.md) | [Index](README.md) | [Next: 02. Basis sets →](02_basis.md)
 

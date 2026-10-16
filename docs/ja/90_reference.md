@@ -1,6 +1,6 @@
 # 付録：早見表・外部ツール・トラブルシュート
 
-*[🌐 English](../en/90_reference.md) ・ 日本語*
+*[English](../en/90_reference.md) ・ 日本語 ・ [简体中文](../zh/90_reference.md)*
 
 [← 05. Tight-binding](05_tight-binding.md) | [目次](README.md)
 
