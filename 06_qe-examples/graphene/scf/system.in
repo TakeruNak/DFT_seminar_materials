@@ -1,0 +1,20 @@
+NAME graphene
+CAL  scf
+NUM_PROCS 4
+
+# ============================================
+# NAME      : input file の prefix (${NAME}.scf.in など)
+# CAL       : 計算手法
+# NUM_PROCS : MPI 並列数 (自分のマシンの物理コア数以下にする)
+#
+# CAL に指定できる主な値
+#   scf      = SCF 計算
+#   nscf     = scf + non-SCF 計算
+#   relax    = 原子位置の構造最適化
+#   vc-relax = 原子位置 + 格子定数の構造最適化
+#   bands    = band 構造計算 (scf -> nscf -> bands.x -> plot)
+#   dos      = 状態密度計算 (scf -> nscf -> dos.x)
+#   proj     = 射影状態密度 PDOS (nscf -> projwfc.x -> plot)
+#   wf       = 波動関数出力 (scf -> pp.x)
+#   cd       = 電荷密度出力 (scf -> pp.x)
+# ============================================

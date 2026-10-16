@@ -1,8 +1,26 @@
 #!/bin/bash
 
-PW_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pw.x
-PP_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pp.x
-BANDS_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/bands.x
+# ============================================================
+# Quantum ESPRESSO binaries
+#   既定では PATH 上の pw.x / pp.x / bands.x / dos.x / projwfc.x を使う。
+#   独自ビルドを使う場合のみ環境変数 QE_BIN_DIR を設定する。
+#     export QE_BIN_DIR=$HOME/src/qe-7.5/bin
+# ============================================================
+QE_BIN_DIR=${QE_BIN_DIR:-}
+QE_PREFIX=${QE_BIN_DIR:+${QE_BIN_DIR}/}
+
+PW_COMMAND=${QE_PREFIX}pw.x
+PP_COMMAND=${QE_PREFIX}pp.x
+BANDS_COMMAND=${QE_PREFIX}bands.x
+DOS_COMMAND=${QE_PREFIX}dos.x
+PROJWFC_COMMAND=${QE_PREFIX}projwfc.x
+
+if ! command -v "${PW_COMMAND}" >/dev/null 2>&1; then
+    echo ">>> ERROR: pw.x が見つかりません (${PW_COMMAND})"
+    echo ">>> Quantum ESPRESSO を install するか, QE_BIN_DIR を設定してください."
+    echo ">>>   例) export QE_BIN_DIR=/opt/homebrew/bin"
+    exit 1
+fi
 # UTILITY_COMMAND=/Users/takerunakashima/workspace/src/QE/utulity/
 
 if [ -e system.in ]; then
@@ -143,7 +161,7 @@ elif [ ${CAL} = "cd" ]; then        ### charge density calculation ###
     wait
 #    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
 #    wait
-    mpirun -np ${NUM_PROCS} pp.x -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out 
+    mpirun -np ${NUM_PROCS} ${PP_COMMAND} -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out 
     ###
 elif [ ${CAL} = "dos" ]; then       ### Density of states calcualtion ###
     ###
@@ -152,7 +170,7 @@ elif [ ${CAL} = "dos" ]; then       ### Density of states calcualtion ###
     wait
     mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.nscf.in >${NAME}.nscf.out
     wait
-    mpirun -np ${NUM_PROCS} dos.x -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
+    mpirun -np ${NUM_PROCS} ${DOS_COMMAND} -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
     wait
     ###
 elif [ ${CAL} = "wannier" ]; then   ### Maximally localized Wannier function calculation ###
@@ -185,7 +203,7 @@ elif [ ${CAL} = "proj" ]; then   ### Projection wave function ###
     # wait
     mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.nscf.in >${NAME}.nscf.out
     wait
-    mpirun -np ${NUM_PROCS} projwfc.x -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
+    mpirun -np ${NUM_PROCS} ${PROJWFC_COMMAND} -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
     wait
     ./chprojwfcplot_mac.sh ${NAME}
     ###

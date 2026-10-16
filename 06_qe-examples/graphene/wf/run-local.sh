@@ -1,8 +1,26 @@
 #!/bin/bash
 
-PW_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pw.x
-PP_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pp.x
-BANDS_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bands.x
+# ============================================================
+# Quantum ESPRESSO binaries
+#   既定では PATH 上の pw.x / pp.x / bands.x / dos.x / projwfc.x を使う。
+#   独自ビルドを使う場合のみ環境変数 QE_BIN_DIR を設定する。
+#     export QE_BIN_DIR=$HOME/src/qe-7.5/bin
+# ============================================================
+QE_BIN_DIR=${QE_BIN_DIR:-}
+QE_PREFIX=${QE_BIN_DIR:+${QE_BIN_DIR}/}
+
+PW_COMMAND=${QE_PREFIX}pw.x
+PP_COMMAND=${QE_PREFIX}pp.x
+BANDS_COMMAND=${QE_PREFIX}bands.x
+DOS_COMMAND=${QE_PREFIX}dos.x
+PROJWFC_COMMAND=${QE_PREFIX}projwfc.x
+
+if ! command -v "${PW_COMMAND}" >/dev/null 2>&1; then
+    echo ">>> ERROR: pw.x が見つかりません (${PW_COMMAND})"
+    echo ">>> Quantum ESPRESSO を install するか, QE_BIN_DIR を設定してください."
+    echo ">>>   例) export QE_BIN_DIR=/opt/homebrew/bin"
+    exit 1
+fi
 # UTILITY_COMMAND=/Users/takerunakashima/workspace/src/QE/utulity/
 
 if [ -e system.in ]; then
@@ -111,12 +129,12 @@ elif [ ${CAL} = "stm_cc" ]; then      ### constant-current calculation ###
 elif [ ${CAL} = "relax" ]; then      ### relaxation of inner structure calculation ###
     ###
     echo ">> Start relax calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.relax.in >${NAME}.relax.out 
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.relax.in >${NAME}.relax.out 
     ###
 elif [ ${CAL} = "vc-relax" ]; then      ### relaxation of inner and lattice structure calculation ###
     ###
     echo ">> Start vc-relax calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.vc-relax.in >${NAME}.vc-relax.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.vc-relax.in >${NAME}.vc-relax.out
     ###
 elif [ ${CAL} = "bands" ]; then      ### Band calculation ###
     ###
@@ -132,27 +150,27 @@ elif [ ${CAL} = "bands" ]; then      ### Band calculation ###
 elif [ ${CAL} = "wf" ]; then        ### Wave function calculation ###
     ###
     echo ">> Start wf calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
     wait
-    mpirun -np ${NUM_PROCS} pp.x -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
+    mpirun -np ${NUM_PROCS} ${PP_COMMAND} -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
     ###
 elif [ ${CAL} = "cd" ]; then        ### charge density calculation ###
     ###
     echo ">> Start charge density calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
     wait
 #    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
 #    wait
-    mpirun -np ${NUM_PROCS} pp.x -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out 
+    mpirun -np ${NUM_PROCS} ${PP_COMMAND} -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out 
     ###
 elif [ ${CAL} = "dos" ]; then       ### Density of states calcualtion ###
     ###
     echo ">> Start DOS calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.scf.in >${NAME}.scf.out
     wait
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.nscf.in >${NAME}.nscf.out
     wait
-    mpirun -np ${NUM_PROCS} dos.x -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
+    mpirun -np ${NUM_PROCS} ${DOS_COMMAND} -inp ${NAME}.${CAL}.in >${NAME}.${CAL}.out
     wait
     ###
 elif [ ${CAL} = "wannier" ]; then   ### Maximally localized Wannier function calculation ###
@@ -183,9 +201,9 @@ elif [ ${CAL} = "proj" ]; then   ### Projection wave function ###
     echo ">> Start projection calculation"
     # mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.scf.in >${NAME}.scf.out
     # wait
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.nscf.in >${NAME}.nscf.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.nscf.in >${NAME}.nscf.out
     wait
-    mpirun -np ${NUM_PROCS} projwfc.x -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
+    mpirun -np ${NUM_PROCS} ${PROJWFC_COMMAND} -inp ${NAME}.projwfc.in >${NAME}.projwfc.out
     wait
     ./chprojwfcplot_mac.sh ${NAME}
     ###
@@ -196,7 +214,7 @@ elif [ ${CAL} = "pw2bgw" ]; then   ### --- pw2bgw --- ###
     #wait
     #cat kgrid.out  >> ./in
     #wait
-    mpirun -n ${PJM_MPI_PROC} pw.x -in ${NAME}.nscf.in &> ${NAME}.nscf.out
+    mpirun -n ${PJM_MPI_PROC} ${PW_COMMAND} -in ${NAME}.nscf.in &> ${NAME}.nscf.out
     wait
     mpirun -n ${PJM_MPI_PROC} pw2bgw.x -in  ${NAME}.pw2bgw.in &> ${NAME}.pw2bgw.out
     ###
@@ -269,7 +287,7 @@ elif [ ${CAL} = "absorption.cplx" ]; then   ### --- absorption.cplx --- ###
 elif [ ${CAL} = "esm-rism" ]; then   ### --- ESM-Calculation --- ###
     ###
     echo ">> Start ESM-Calculation"
-    mpirun -np ${NUM_PROCS} pw.x -inp ${NAME}.esm-rism.in >${NAME}.esm-rism.out
+    mpirun -np ${NUM_PROCS} ${PW_COMMAND} -inp ${NAME}.esm-rism.in >${NAME}.esm-rism.out
     ###
 elif [ ${CAL} = "pprism" ]; then   ### --- ESM-Calculation --- ###
     ###

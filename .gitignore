@@ -1,5 +1,20 @@
+# --- OS / editor ---
 .DS_Store
+*.swp
+
+# --- 配布しない教材（ローカル専用） -------------------------------
+# 講義スライド・演習問題・HOMEWORK の原本。
+# remote repository には絶対に push しないこと。
+99_slides/
+
+# 解答例
 .answear
+.debug
+
+# --- Python 環境 ---
+.venv/
+__pycache__/
+
+# --- 計算で生成される中間ファイル ---
 out/
 *.cube
-*.swp

@@ -1,0 +1,11 @@
+# 演習 01-05 に必要
+numpy
+scipy
+matplotlib
+
+# 演習 08 (TB_model) に必要
+pythtb
+pymatgen
+
+# 構造ファイル操作（任意）
+ase
