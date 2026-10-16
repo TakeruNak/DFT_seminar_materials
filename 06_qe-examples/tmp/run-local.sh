@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PW_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pw.x
-PP_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bin/pp.x
-BANDS_COMMAND=/Users/takerunakashima/workspace/src/QE/qe-7.5/bands.x
+PW_COMMAND=/Users/takeru/workspace/01_src/bin/pw.x
+PP_COMMAND=/Users/takeru/workspace/01_src/bin/pp.x
+BANDS_COMMAND=/Users/takeru/workspace/01_src/bin/bands.x
 # UTILITY_COMMAND=/Users/takerunakashima/workspace/src/QE/utulity/
 
 if [ -e system.in ]; then
