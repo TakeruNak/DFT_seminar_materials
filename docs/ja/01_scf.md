@@ -1,6 +1,8 @@
 # 01. 自己無撞着場（SCF）
 
-[← 00. 環境構築](00_setup.md) | [目次](../README.md) | [次へ：02. 基底関数 →](02_basis.md)
+*[🌐 English](../en/01_scf.md) ・ 日本語*
+
+[← 00. 環境構築](00_setup.md) | [目次](README.md) | [次へ：02. 基底関数 →](02_basis.md)
 
 **ねらい**：Kohn-Sham 方程式が「解を求めるのに解が必要」という循環構造を持つこと、
 それを反復（SCF ループ）と mixing で解くことを、2 サイト最小モデルで体感する。
@@ -17,7 +19,7 @@
 
 ## 演習 01: 2-site tight-binding の自己無撞着
 
-**ディレクトリ**: [`01_2-site-convergence/`](../01_2-site-convergence/)
+**ディレクトリ**: [`01_2-site-convergence/`](../../01_2-site-convergence/)
 
 ### モデル
 
@@ -76,7 +78,7 @@ python 2-site-convergence.py
 
 ## 演習 02: 2-site 疑似 Kohn-Sham 方程式
 
-**ディレクトリ**: [`02_2-site-KSeq-convergence/`](../02_2-site-KSeq-convergence/)
+**ディレクトリ**: [`02_2-site-KSeq-convergence/`](../../02_2-site-KSeq-convergence/)
 
 ### モデル
 
@@ -152,4 +154,4 @@ python 2-site-KSeq.py
 
 ---
 
-[← 00. 環境構築](00_setup.md) | [目次](../README.md) | [次へ：02. 基底関数 →](02_basis.md)
+[← 00. 環境構築](00_setup.md) | [目次](README.md) | [次へ：02. 基底関数 →](02_basis.md)

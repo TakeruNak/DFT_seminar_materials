@@ -1,6 +1,8 @@
 # 付録：早見表・外部ツール・トラブルシュート
 
-[← 05. Tight-binding](05_tight-binding.md) | [目次](../README.md)
+*[🌐 English](../en/90_reference.md) ・ 日本語*
+
+[← 05. Tight-binding](05_tight-binding.md) | [目次](README.md)
 
 ---
 
@@ -217,4 +219,4 @@ git status            # commit 前に必ず確認する
 
 ---
 
-[← 05. Tight-binding](05_tight-binding.md) | [目次](../README.md)
+[← 05. Tight-binding](05_tight-binding.md) | [目次](README.md)

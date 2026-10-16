@@ -1,6 +1,8 @@
 # 00. 環境構築
 
-[← 目次に戻る](../README.md) | [次へ：01. 自己無撞着場 →](01_scf.md)
+*[🌐 English](../en/00_setup.md) ・ 日本語*
+
+[← 目次に戻る](README.md) | [次へ：01. 自己無撞着場 →](01_scf.md)
 
 初回のみ実施。所要 1〜2 時間（ビルド時間を除く）。
 **対象 OS: macOS**（Linux の場合は Homebrew → apt/dnf に読み替え）
@@ -215,4 +217,4 @@ which pw.x || echo "QE_BIN_DIR=$QE_BIN_DIR"
 
 ---
 
-[← 目次に戻る](../README.md) | [次へ：01. 自己無撞着場 →](01_scf.md)
+[← 目次に戻る](README.md) | [次へ：01. 自己無撞着場 →](01_scf.md)

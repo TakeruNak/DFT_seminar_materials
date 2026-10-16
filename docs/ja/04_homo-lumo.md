@@ -1,11 +1,13 @@
 # 04. HOMO-LUMO 解析（F₂ 分子）
 
-[← 03. Quantum ESPRESSO](03_quantum-espresso.md) | [目次](../README.md) | [次へ：05. Tight-binding →](05_tight-binding.md)
+*[🌐 English](../en/04_homo-lumo.md) ・ 日本語*
+
+[← 03. Quantum ESPRESSO](03_quantum-espresso.md) | [目次](README.md) | [次へ：05. Tight-binding →](05_tight-binding.md)
 
 **ねらい**：構造最適化 → SCF → 波動関数出力の一連の流れを自分で通し、
 Kohn-Sham 軌道のエネルギー準位と空間分布から **HOMO / LUMO** を同定する。
 
-**ディレクトリ**: [`07_homo-lumo/F2/`](../07_homo-lumo/F2/)
+**ディレクトリ**: [`07_homo-lumo/F2/`](../../07_homo-lumo/F2/)
 
 F₂ 分子は σ/σ*, π/π* が明快に現れるため、分子軌道論との対応を見るのに適している。
 
@@ -13,7 +15,7 @@ F₂ 分子は σ/σ*, π/π* が明快に現れるため、分子軌道論と�
 
 ## 4-1. 構造最適化
 
-**ディレクトリ**: [`07_homo-lumo/F2/relax/`](../07_homo-lumo/F2/relax/)
+**ディレクトリ**: [`07_homo-lumo/F2/relax/`](../../07_homo-lumo/F2/relax/)
 
 ```bash
 cd 07_homo-lumo/F2/relax
@@ -47,7 +49,7 @@ grep '!' F2.relax.out                                 # 全エネルギー
 
 ## 4-2. SCF と固有値の取得
 
-**ディレクトリ**: [`07_homo-lumo/F2/wf/`](../07_homo-lumo/F2/wf/)
+**ディレクトリ**: [`07_homo-lumo/F2/wf/`](../../07_homo-lumo/F2/wf/)
 
 最適化構造（`F2.relax.vasp`）を使った `F2.scf.in` が用意されている。
 
@@ -183,4 +185,4 @@ open -a VESTA F2_G2.cube
 
 ---
 
-[← 03. Quantum ESPRESSO](03_quantum-espresso.md) | [目次](../README.md) | [次へ：05. Tight-binding →](05_tight-binding.md)
+[← 03. Quantum ESPRESSO](03_quantum-espresso.md) | [目次](README.md) | [次へ：05. Tight-binding →](05_tight-binding.md)

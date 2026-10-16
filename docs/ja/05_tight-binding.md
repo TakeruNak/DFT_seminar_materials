@@ -1,11 +1,13 @@
 # 05. Tight-binding モデル（graphene）
 
-[← 04. HOMO-LUMO](04_homo-lumo.md) | [目次](../README.md) | [付録：早見表 →](90_reference.md)
+*[🌐 English](../en/05_tight-binding.md) ・ 日本語*
+
+[← 04. HOMO-LUMO](04_homo-lumo.md) | [目次](README.md) | [付録：早見表 →](90_reference.md)
 
 **ねらい**：演習 01 で使った 2 サイト tight-binding を周期系に拡張し、
 **モデル計算（top-down）と第一原理計算（bottom-up）が同じ物理を見ている**ことを確認する。
 
-**ディレクトリ**: [`TB_model/graphene/src/`](../TB_model/graphene/src/)
+**ディレクトリ**: [`TB_model/graphene/src/`](../../TB_model/graphene/src/)
 
 ---
 
@@ -115,4 +117,4 @@ cd 06_qe-examples/graphene/scf
 
 ---
 
-[← 04. HOMO-LUMO](04_homo-lumo.md) | [目次](../README.md) | [付録：早見表 →](90_reference.md)
+[← 04. HOMO-LUMO](04_homo-lumo.md) | [目次](README.md) | [付録：早見表 →](90_reference.md)

@@ -1,6 +1,8 @@
 # 02. 基底関数と完備性
 
-[← 01. 自己無撞着場](01_scf.md) | [目次](../README.md) | [次へ：03. Quantum ESPRESSO →](03_quantum-espresso.md)
+*[🌐 English](../en/02_basis.md) ・ 日本語*
+
+[← 01. 自己無撞着場](01_scf.md) | [目次](README.md) | [次へ：03. Quantum ESPRESSO →](03_quantum-espresso.md)
 
 **ねらい**：微分方程式を計算機で扱うには、関数を基底で展開して行列問題に変換する必要がある。
 その際に効いてくる 3 つの性質——**完備性 / 直交性 / 境界条件**——を手を動かして確認する。
@@ -21,7 +23,7 @@
 
 ## 演習 03: 矩形波を sin で展開する
 
-**ディレクトリ**: [`03_sinx_fitting/`](../03_sinx_fitting/)
+**ディレクトリ**: [`03_sinx_fitting/`](../../03_sinx_fitting/)
 
 ### 内容
 
@@ -61,7 +63,7 @@ python fourier.py
 
 ## 演習 04: 奇関数を偶関数基底で展開する
 
-**ディレクトリ**: [`04_sinx-cosx/`](../04_sinx-cosx/)
+**ディレクトリ**: [`04_sinx-cosx/`](../../04_sinx-cosx/)
 
 ### 内容
 
@@ -99,7 +101,7 @@ python odd-by-even-rep.py
 
 ## 演習 05: Gaussian を平面波基底で展開する
 
-**ディレクトリ**: [`05_gaussian-plane-wave-fitting/`](../05_gaussian-plane-wave-fitting/)
+**ディレクトリ**: [`05_gaussian-plane-wave-fitting/`](../../05_gaussian-plane-wave-fitting/)
 
 原子核まわりに局在した電子軌道を模した Gaussian を、**平面波基底**で展開する。
 Quantum ESPRESSO が使う基底そのもの。
@@ -177,4 +179,4 @@ python wf-fitting.py
 
 ---
 
-[← 01. 自己無撞着場](01_scf.md) | [目次](../README.md) | [次へ：03. Quantum ESPRESSO →](03_quantum-espresso.md)
+[← 01. 自己無撞着場](01_scf.md) | [目次](README.md) | [次へ：03. Quantum ESPRESSO →](03_quantum-espresso.md)

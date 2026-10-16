@@ -1,6 +1,8 @@
 # 03. Quantum ESPRESSO 入門
 
-[← 02. 基底関数](02_basis.md) | [目次](../README.md) | [次へ：04. HOMO-LUMO →](04_homo-lumo.md)
+*[🌐 English](../en/03_quantum-espresso.md) ・ 日本語*
+
+[← 02. 基底関数](02_basis.md) | [目次](README.md) | [次へ：04. HOMO-LUMO →](04_homo-lumo.md)
 
 **ねらい**：平面波基底 + 擬ポテンシャル法の ab initio コードである Quantum ESPRESSO (QE) で、
 SCF → 構造最適化 → 波動関数 → band → DOS → PDOS までの基本計算を一通り実行する。
@@ -82,7 +84,7 @@ CELL_PARAMETERS   格子ベクトル
 
 ## 3-1. SCF 計算（H₂O）
 
-**ディレクトリ**: [`06_qe-examples/h2o/scf/`](../06_qe-examples/h2o/scf/)
+**ディレクトリ**: [`06_qe-examples/h2o/scf/`](../../06_qe-examples/h2o/scf/)
 
 孤立分子なので、10 Å の立方体セルに真空層を取って周期境界条件の影響を切っている
 （→ 演習 03 で見た周期基底の性質）。
@@ -139,7 +141,7 @@ open -a VESTA output.xyz                  # 可視化
 
 ## 3-2. 構造最適化（H₂O relax）
 
-**ディレクトリ**: [`06_qe-examples/h2o/relax/`](../06_qe-examples/h2o/relax/)
+**ディレクトリ**: [`06_qe-examples/h2o/relax/`](../../06_qe-examples/h2o/relax/)
 
 ```bash
 cd 06_qe-examples/h2o/relax
@@ -175,7 +177,7 @@ grep '!' h2o.relax.out                                 # 各 step の全エネ�
 
 ## 3-3. 波動関数の可視化（H₂O wf）
 
-**ディレクトリ**: [`06_qe-examples/h2o/wf/`](../06_qe-examples/h2o/wf/)
+**ディレクトリ**: [`06_qe-examples/h2o/wf/`](../../06_qe-examples/h2o/wf/)
 
 SCF で求めた Kohn-Sham 軌道 φᵢ を `pp.x` で cube 形式に出力し、VESTA で見る。
 
@@ -220,7 +222,7 @@ open -a VESTA h2o_G2.cube
 
 ### graphene（2D）
 
-**ディレクトリ**: [`06_qe-examples/graphene/scf/`](../06_qe-examples/graphene/scf/)
+**ディレクトリ**: [`06_qe-examples/graphene/scf/`](../../06_qe-examples/graphene/scf/)
 
 ```bash
 cd 06_qe-examples/graphene/scf
@@ -245,7 +247,7 @@ open -a VESTA graphene_G6.cube
 
 ### graphite（3D, vc-relax）
 
-**ディレクトリ**: [`06_qe-examples/graphite/`](../06_qe-examples/graphite/)
+**ディレクトリ**: [`06_qe-examples/graphite/`](../../06_qe-examples/graphite/)
 
 ```bash
 cd 06_qe-examples/graphite/vc-relax
@@ -279,7 +281,7 @@ cd ../scf
 
 ## 3-5. バンド構造（silicon）
 
-**ディレクトリ**: [`06_qe-examples/sillicon/bands/`](../06_qe-examples/sillicon/bands/)
+**ディレクトリ**: [`06_qe-examples/sillicon/bands/`](../../06_qe-examples/sillicon/bands/)
 
 ```
 SCF (pw.x) → NSCF: calculation='bands' (pw.x) → bands.x → gnuplot
@@ -337,7 +339,7 @@ replot
 
 ## 3-6. 状態密度 DOS（silicon）
 
-**ディレクトリ**: [`06_qe-examples/sillicon/dos/`](../06_qe-examples/sillicon/dos/)
+**ディレクトリ**: [`06_qe-examples/sillicon/dos/`](../../06_qe-examples/sillicon/dos/)
 
 ```
 SCF (pw.x) → NSCF 密なメッシュ (pw.x) → dos.x → gnuplot
@@ -366,7 +368,7 @@ Fermi 準位 `6.7675 eV`。
 
 ## 3-7. 射影状態密度 PDOS（silicon）
 
-**ディレクトリ**: [`06_qe-examples/sillicon/pdos/`](../06_qe-examples/sillicon/pdos/)
+**ディレクトリ**: [`06_qe-examples/sillicon/pdos/`](../../06_qe-examples/sillicon/pdos/)
 
 各状態を原子軌道（s, p, d）に射影し、どの軌道由来かを分解する。
 
@@ -413,13 +415,13 @@ gnuplot projwfc.plt
 
 ## 3-8. フォノン計算（silicon, 発展）
 
-**ディレクトリ**: [`06_qe-examples/sillicon/phonon/`](../06_qe-examples/sillicon/phonon/)
+**ディレクトリ**: [`06_qe-examples/sillicon/phonon/`](../../06_qe-examples/sillicon/phonon/)
 
 phonopy を用いた有限変位法。**余裕がある場合のみ。**
 
 ### phonopy のバージョン（重要）
 
-本ディレクトリのスクリプトと [`howtouse.md`](../06_qe-examples/sillicon/phonon/howtouse.md)
+本ディレクトリのスクリプトと [`howtouse.md`](../../06_qe-examples/sillicon/phonon/howtouse.md)
 は **phonopy 3 系以前の CLI** を前提にしている。
 phonopy 4 以降は `-d` / `-f` / `-c` が別コマンド `phonopy-init` に移動しており、
 そのままでは動かない。
@@ -507,4 +509,4 @@ phonopy -p pdos.conf             # → projected_dos.dat
 
 ---
 
-[← 02. 基底関数](02_basis.md) | [目次](../README.md) | [次へ：04. HOMO-LUMO →](04_homo-lumo.md)
+[← 02. 基底関数](02_basis.md) | [目次](README.md) | [次へ：04. HOMO-LUMO →](04_homo-lumo.md)

@@ -1,102 +1,92 @@
 # DFT Seminar Materials
 
-Institute of Science Tokyo / CLS Tateyama-Ando Group 内セミナー
+Hands-on exercise materials for the internal seminar
+**"Density Functional Theory — Theory and Calculation"**
+Laboratory for Chemistry and Life Science (CLS), Institute of Science Tokyo.
+
+Institute of Science Tokyo / CLS 立山・安藤グループ 内セミナー
 **「密度汎関数理論（理論概略・計算）」** の演習資料一式。
 
-新しく研究室に配属された学生が、**このページを上から順にたどるだけで全ての演習を実行できる**ように構成されています。
+---
+
+## 📖 Choose your language / 言語を選択してください
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 🇬🇧 English
+
+**→ [Open the English manual](docs/en/README.md)**
+
+Start here if you prefer English.
+The manual walks you from environment setup to
+Quantum ESPRESSO calculations step by step.
+
+</td>
+<td width="50%" valign="top">
+
+### 🇯🇵 日本語
+
+**→ [日本語マニュアルを開く](docs/ja/README.md)**
+
+日本語で読みたい場合はこちら。
+環境構築から Quantum ESPRESSO 計算まで
+手順どおり進められます。
+
+</td>
+</tr>
+</table>
+
+Both manuals cover exactly the same content and exercises.
+どちらのマニュアルも内容・演習は完全に同一です。
 
 ---
 
-## 進め方
+## What is in this repository / このリポジトリの内容
 
-1. ブラウザでこのページを開いたまま、手元で **Terminal** を 1 枚開く
-2. [00. 環境構築](docs/00_setup.md) を完了させる（初回のみ・所要 1〜2 時間）
-3. 下表の演習を **上から順に** 実施する
-4. 各章の末尾にある「確認事項」に答えられれば次へ進む
-
-> **はじめに必ず読むこと** → [docs/00_setup.md](docs/00_setup.md)
-
----
-
-## 学習ロードマップ
-
-| # | 章 | 演習ディレクトリ | 学ぶこと | 所要 |
-|---|---|---|---|---|
-| 00 | [環境構築](docs/00_setup.md) | `00_environment/` | Terminal, Homebrew, Git, Python, Quantum ESPRESSO | 1–2 h |
-| 01 | [自己無撞着場 (SCF)](docs/01_scf.md) | `01_`, `02_` | SCF ループ, mixing, Kohn-Sham 方程式 | 1 h |
-| 02 | [基底関数と完備性](docs/02_basis.md) | `03_`, `04_`, `05_` | Fourier 展開, 完備性, 平面波基底, cutoff energy | 1.5 h |
-| 03 | [Quantum ESPRESSO 入門](docs/03_quantum-espresso.md) | `06_qe-examples/` | SCF, relax, 波動関数, band, DOS, PDOS, phonon | 3–4 h |
-| 04 | [HOMO-LUMO 解析](docs/04_homo-lumo.md) | `07_homo-lumo/` | 分子軌道の可視化とエネルギー準位 | 1 h |
-| 05 | [Tight-binding モデル](docs/05_tight-binding.md) | `TB_model/` | TB モデルと第一原理計算の対応 | 1 h |
-
-**付録**
-
-- [コマンド早見表・外部ツール・トラブルシュート](docs/90_reference.md)
-
-> 全演習は **QE 7.5 / Open MPI 5.0.9 / phonopy 3.5.1 / pythtb 2.0.0 / macOS (Apple Silicon)**
-> で実行確認済み。各章に参照値と実測時間を載せてあるので、自分の結果と突き合わせること。
-
----
-
-## 理論的な前提（セミナーで扱う範囲）
-
-```
-Many-Body Schrödinger eq.   HΦ = EΦ        ← 直接解くのは計算量的に不可能
-          ↓  Hohenberg-Kohn theorem         E = E[n]  （全エネルギーは電子密度の汎関数）
-          ↓  Kohn-Sham theorem              (-½∇² + v_eff[n]) φᵢ = εᵢ φᵢ
-          ↓  E_xc への近似                   LDA / GGA / meta-GGA / hybrid
-          ↓  基底関数で離散化                 平面波基底 + 擬ポテンシャル
-          ↓  自己無撞着に解く                 SCF ループ
-      Quantum ESPRESSO (PWscf)
-```
-
-本リポジトリの演習は、この流れの各ステップを **最小モデルで手を動かして確認する** ために並べてあります。
-
-| 流れ | 対応する演習 |
-|---|---|
-| 自己無撞着に解く | 01, 02 |
-| 基底関数で離散化 | 03, 04, 05 |
-| 擬ポテンシャル + 平面波 で実計算 | 06, 07 |
-| 第一原理計算とモデルの対応 | TB_model |
-
----
-
-## ディレクトリ構成
+| # | Topic | Exercise directory |
+|---|---|---|
+| 00 | Environment setup / 環境構築 | `00_environment/` |
+| 01 | Self-consistent field (SCF) / 自己無撞着場 | `01_`, `02_` |
+| 02 | Basis sets and completeness / 基底関数と完備性 | `03_`, `04_`, `05_` |
+| 03 | Quantum ESPRESSO / Quantum ESPRESSO 入門 | `06_qe-examples/` |
+| 04 | HOMO-LUMO analysis / HOMO-LUMO 解析 | `07_homo-lumo/` |
+| 05 | Tight-binding model / Tight-binding モデル | `TB_model/` |
 
 ```
 DFT_seminar_materials/
-├── README.md                       ← このファイル（入口）
-├── requirements.txt                 Python 依存パッケージ
-├── docs/                            マニュアル本体
-│   ├── 00_setup.md
-│   ├── 01_scf.md
-│   ├── 02_basis.md
-│   ├── 03_quantum-espresso.md
-│   ├── 04_homo-lumo.md
-│   ├── 05_tight-binding.md
-│   └── 90_reference.md
-├── 00_environment/                  vim / tmux の設定例
-├── 01_2-site-convergence/           演習 01
-├── 02_2-site-KSeq-convergence/      演習 02
-├── 03_sinx_fitting/                 演習 03
-├── 04_sinx-cosx/                    演習 04
-├── 05_gaussian-plane-wave-fitting/  演習 05
-├── 06_qe-examples/                  演習 06（QE 本体）
-├── 07_homo-lumo/                    演習 07
-├── TB_model/                        演習 08
-└── 99_slides/                       講義スライド（.gitignore 済・配布は別途）
+├── README.md            ← this page / このページ（言語選択）
+├── requirements.txt      Python dependencies
+├── docs/
+│   ├── en/               English manual
+│   └── ja/               日本語マニュアル
+├── 00_environment/ ... 07_homo-lumo/, TB_model/   exercises / 演習
+└── 99_slides/            lecture slides (git-ignored, distributed separately)
 ```
 
+> `99_slides/` is **not** part of this repository (git-ignored).
+> Lecture slides, exercise sheets and homework are distributed separately.
+>
 > `99_slides/` は **リポジトリに含まれません**（`.gitignore` 済）。
 > 講義スライド・演習問題・HOMEWORK は担当者から別途配布されます。
 
 ---
 
-## 困ったとき
+## Quick start / クイックスタート
 
-1. [docs/90_reference.md](docs/90_reference.md) の「トラブルシュート」を確認
-2. エラーメッセージ全文をコピーして検索
-3. それでも解決しなければ、**実行したコマンド** と **エラー全文** を添えて質問する
+```bash
+git clone https://github.com/TakeruNak/DFT_seminar_materials.git
+cd DFT_seminar_materials
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Then open [English setup](docs/en/00_setup.md) or [日本語の環境構築](docs/ja/00_setup.md).
+
+> All exercises are verified on **QE 7.5 / Open MPI 5.0.9 / phonopy 3.5.1 /
+> pythtb 2.0.0 / macOS (Apple Silicon)**. Reference values and measured
+> runtimes are given in each chapter.
 
 ---
 
