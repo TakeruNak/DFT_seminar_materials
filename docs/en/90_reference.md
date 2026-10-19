@@ -158,7 +158,9 @@ open -a VESTA output.xyz
 | `ModuleNotFoundError: numpy` | You probably forgot `source .venv/bin/activate` |
 | `ModuleNotFoundError: pythtb` | `pip install pythtb pymatgen` |
 | `TBModel` cannot be imported | pythtb 2.0 or later is required (`pip install -U pythtb`) |
-| No matplotlib window appears | Use `plt.savefig()` instead of `plt.show()` |
+| No matplotlib window appears | Every script also writes a `.png` via `plt.savefig()` — open that instead |
+| A script hangs over SSH | `plt.show()` is waiting for a window. Run it as `MPLBACKEND=Agg python <script>.py` (the `.png` is still written) |
+| `pyenv: version '...' is not installed` | A stale `.python-version` from an old clone. `git pull`, or delete that file |
 | `'-d' is a setup operation that moved to 'phonopy-init' in v4` | You have phonopy 4. `pip install "phonopy<4"` |
 | gnuplot never exits | That is `pause -1` in the `.plt` file. Press Enter in the Terminal |
 

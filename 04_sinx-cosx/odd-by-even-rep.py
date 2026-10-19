@@ -65,9 +65,9 @@ y_approx = approx_function(x_vals)
 
 plt.figure(figsize=(10, 6))
 # 元の関数（青色）
-plt.plot(x_vals, y_target, label="Original: $\sin(x)$ (Odd)", color='blue', linewidth=2)
+plt.plot(x_vals, y_target, label=r"Original: $\sin(x)$ (Odd)", color='blue', linewidth=2)
 # コサインで頑張って近似した結果（赤色の破線）
-plt.plot(x_vals, y_approx, label="Approximation by $\cos(kx)$ (Even)", color='red', linestyle='--', linewidth=3)
+plt.plot(x_vals, y_approx, label=r"Approximation by $\cos(kx)$ (Even)", color='red', linestyle='--', linewidth=3)
 
 plt.title("Attempt to expand Odd function with Even basis")
 plt.xlabel("x")

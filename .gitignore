@@ -14,6 +14,8 @@
 # --- Python 環境 ---
 .venv/
 __pycache__/
+# pyenv の環境名は各自のローカル事情なのでリポジトリに入れない
+.python-version
 
 # --- 計算で生成される中間ファイル ---
 out/
