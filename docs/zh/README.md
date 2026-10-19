@@ -25,7 +25,7 @@
 | # | 章节 | 练习目录 | 学习内容 | 用时 |
 |---|---|---|---|---|
 | 00 | [环境搭建](00_setup.md) | `00_environment/` | 终端, Homebrew, Git, Python, Quantum ESPRESSO | 1–2 h |
-| 01 | [自洽场 (SCF)](01_scf.md) | `01_`, `02_` | SCF 循环, 混合 (mixing), Kohn-Sham 方程 | 1 h |
+| 01 | [自洽场 (SCF)](01_scf.md) | `01_`, `02_` | `01_`: SCF 循环, 混合 (mixing) ／ `02_`: Kohn-Sham 方程（Hartree + 交换关联, double counting） | 1 h |
 | 02 | [基函数与完备性](02_basis.md) | `03_`, `04_`, `05_` | 傅里叶展开, 完备性, 平面波基, 截断能 | 1.5 h |
 | 03 | [Quantum ESPRESSO 入门](03_quantum-espresso.md) | `06_qe-examples/` | SCF, 结构优化, 波函数, 能带, DOS, PDOS, 声子 | 3–4 h |
 | 04 | [HOMO-LUMO 分析](04_homo-lumo.md) | `07_homo-lumo/` | 分子轨道的可视化与能级 | 1 h |
@@ -57,6 +57,7 @@
 
 | 流程中的步骤 | 对应练习 |
 |---|---|
+| Kohn-Sham 方程 / 对 E_xc 的近似 | 02 |
 | 自洽求解 | 01, 02 |
 | 用基函数离散化 | 03, 04, 05 |
 | 用赝势 + 平面波做实际计算 | 06, 07 |
@@ -75,16 +76,20 @@ DFT_seminar_materials/
 │   ├── ja/                          日本語マニュアル
 │   └── zh/                          简体中文手册（本目录）
 ├── 00_environment/                  vim / tmux 配置示例
-├── 01_2-site-convergence/           练习 01
-├── 02_2-site-KSeq-convergence/      练习 02
-├── 03_sinx_fitting/                 练习 03
-├── 04_sinx-cosx/                    练习 04
-├── 05_gaussian-plane-wave-fitting/  练习 05
-├── 06_qe-examples/                  练习 06（Quantum ESPRESSO）
-├── 07_homo-lumo/                    练习 07
-├── TB_model/                        练习 08
+├── 01_2-site-convergence/           练习 01: SCF 循环与混合（on-site = U·n）
+├── 02_2-site-KSeq-convergence/      练习 02: Kohn-Sham 方程（v_eff = V_H + V_xc）
+├── 03_sinx_fitting/                 练习 03: 方波的傅里叶展开（Gibbs 现象）
+├── 04_sinx-cosx/                    练习 04: 用 cos 基展开奇函数（基的对称性）
+├── 05_gaussian-plane-wave-fitting/  练习 05: 高斯函数的平面波展开（截断能）
+├── 06_qe-examples/                  练习 06: QE 实际计算（H₂O, graphene/graphite, Si 能带/DOS/声子）
+├── 07_homo-lumo/                    练习 07: F₂ 的 HOMO-LUMO（结构优化 → SCF → 轨道可视化）
+├── TB_model/                        练习 08: graphene 紧束缚模型（Dirac 锥・与第一性原理对比）
 └── 99_slides/                       讲义幻灯片（已 .gitignore，另行分发）
 ```
+
+> `02_2-site-KSeq-convergence/` 中的 `KSeq` 是 **K**ohn-**S**ham **eq**uation 的缩写
+>（不是 k 点序列 k-point sequence）。练习 02 把练习 01 的 on-site energy `U·n`
+> 替换为 Kohn-Sham 有效势 `v_eff = V_H + V_xc`。
 
 > `99_slides/` **不包含在本仓库中**（已加入 `.gitignore`）。
 > 讲义幻灯片、练习题和作业由负责人另行分发。

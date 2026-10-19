@@ -23,7 +23,7 @@ All three manuals cover exactly the same content and exercises.
 | # | Topic | Exercise directory |
 |---|---|---|
 | 00 | Environment setup | `00_environment/` |
-| 01 | Self-consistent field (SCF) | `01_`, `02_` |
+| 01 | Self-consistent field (SCF) | `01_` (SCF loop, mixing) · `02_` (Kohn-Sham equation: Hartree + exchange-correlation) |
 | 02 | Basis sets and completeness | `03_`, `04_`, `05_` |
 | 03 | Quantum ESPRESSO | `06_qe-examples/` |
 | 04 | HOMO-LUMO analysis | `07_homo-lumo/` |
@@ -40,6 +40,9 @@ DFT_seminar_materials/
 ├── 00_environment/ ... 07_homo-lumo/, TB_model/   exercises
 └── 99_slides/            lecture slides (git-ignored, distributed separately)
 ```
+
+> `KSeq` in `02_2-site-KSeq-convergence/` stands for **K**ohn-**S**ham **eq**uation
+> (not "k-point sequence").
 
 > `99_slides/` is **not** part of this repository (git-ignored).
 > Lecture slides, exercise sheets and homework are distributed separately by

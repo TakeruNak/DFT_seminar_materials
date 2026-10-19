@@ -25,7 +25,7 @@ Institute of Science Tokyo / CLS Tateyama-Ando Group 内セミナー
 | # | 章 | 演習ディレクトリ | 学ぶこと | 所要 |
 |---|---|---|---|---|
 | 00 | [環境構築](00_setup.md) | `00_environment/` | Terminal, Homebrew, Git, Python, Quantum ESPRESSO | 1–2 h |
-| 01 | [自己無撞着場 (SCF)](01_scf.md) | `01_`, `02_` | SCF ループ, mixing, Kohn-Sham 方程式 | 1 h |
+| 01 | [自己無撞着場 (SCF)](01_scf.md) | `01_`, `02_` | `01_`: SCF ループ, mixing ／ `02_`: Kohn-Sham 方程式（Hartree + 交換相関, double counting） | 1 h |
 | 02 | [基底関数と完備性](02_basis.md) | `03_`, `04_`, `05_` | Fourier 展開, 完備性, 平面波基底, cutoff energy | 1.5 h |
 | 03 | [Quantum ESPRESSO 入門](03_quantum-espresso.md) | `06_qe-examples/` | SCF, relax, 波動関数, band, DOS, PDOS, phonon | 3–4 h |
 | 04 | [HOMO-LUMO 解析](04_homo-lumo.md) | `07_homo-lumo/` | 分子軌道の可視化とエネルギー準位 | 1 h |
@@ -56,6 +56,7 @@ Many-Body Schrödinger eq.   HΦ = EΦ        ← 直接解くのは計算量的
 
 | 流れ | 対応する演習 |
 |---|---|
+| Kohn-Sham 方程式 / E_xc への近似 | 02 |
 | 自己無撞着に解く | 01, 02 |
 | 基底関数で離散化 | 03, 04, 05 |
 | 擬ポテンシャル + 平面波 で実計算 | 06, 07 |
@@ -74,16 +75,20 @@ DFT_seminar_materials/
 │   ├── ja/                          日本語マニュアル（このディレクトリ）
 │   └── zh/                          简体中文手册
 ├── 00_environment/                  vim / tmux の設定例
-├── 01_2-site-convergence/           演習 01
-├── 02_2-site-KSeq-convergence/      演習 02
-├── 03_sinx_fitting/                 演習 03
-├── 04_sinx-cosx/                    演習 04
-├── 05_gaussian-plane-wave-fitting/  演習 05
-├── 06_qe-examples/                  演習 06（QE 本体）
-├── 07_homo-lumo/                    演習 07
-├── TB_model/                        演習 08
+├── 01_2-site-convergence/           演習 01: SCF ループと mixing（on-site = U·n）
+├── 02_2-site-KSeq-convergence/      演習 02: Kohn-Sham 方程式（v_eff = V_H + V_xc）
+├── 03_sinx_fitting/                 演習 03: 矩形波の Fourier 展開（Gibbs 現象）
+├── 04_sinx-cosx/                    演習 04: 奇関数を cos 基底で展開（基底の対称性）
+├── 05_gaussian-plane-wave-fitting/  演習 05: Gaussian の平面波展開（cutoff energy）
+├── 06_qe-examples/                  演習 06: QE 実計算（H₂O, graphene/graphite, Si band/DOS/phonon）
+├── 07_homo-lumo/                    演習 07: F₂ の HOMO-LUMO（relax → SCF → 軌道可視化）
+├── TB_model/                        演習 08: graphene の tight-binding（Dirac cone・第一原理との比較）
 └── 99_slides/                       講義スライド（.gitignore 済・配布は別途）
 ```
+
+> `02_2-site-KSeq-convergence/` の `KSeq` は **K**ohn-**S**ham **eq**uation の略
+>（k 点列 = k-point sequence ではない）。演習 01 の on-site energy `U·n` を、
+> 演習 02 で Kohn-Sham の有効ポテンシャル `v_eff = V_H + V_xc` に置き換える、という関係。
 
 > `99_slides/` は **リポジトリに含まれません**（`.gitignore` 済）。
 > 講義スライド・演習問題・HOMEWORK は担当者から別途配布されます。

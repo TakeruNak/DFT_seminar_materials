@@ -27,7 +27,7 @@ This manual is written so that a student newly joining the group can
 | # | Chapter | Exercise directory | What you learn | Time |
 |---|---|---|---|---|
 | 00 | [Environment setup](00_setup.md) | `00_environment/` | Terminal, Homebrew, Git, Python, Quantum ESPRESSO | 1–2 h |
-| 01 | [Self-consistent field (SCF)](01_scf.md) | `01_`, `02_` | SCF loop, mixing, Kohn-Sham equation | 1 h |
+| 01 | [Self-consistent field (SCF)](01_scf.md) | `01_`, `02_` | `01_`: SCF loop, mixing / `02_`: Kohn-Sham equation (Hartree + exchange-correlation, double counting) | 1 h |
 | 02 | [Basis sets and completeness](02_basis.md) | `03_`, `04_`, `05_` | Fourier expansion, completeness, plane waves, cutoff energy | 1.5 h |
 | 03 | [Quantum ESPRESSO](03_quantum-espresso.md) | `06_qe-examples/` | SCF, relax, wavefunctions, bands, DOS, PDOS, phonons | 3–4 h |
 | 04 | [HOMO-LUMO analysis](04_homo-lumo.md) | `07_homo-lumo/` | Visualising molecular orbitals and energy levels | 1 h |
@@ -60,6 +60,7 @@ this flow **by hand, on the smallest possible model**.
 
 | Step in the flow | Exercises |
 |---|---|
+| Kohn-Sham equation / approximating E_xc | 02 |
 | Solving self-consistently | 01, 02 |
 | Discretising in a basis | 03, 04, 05 |
 | Real calculations with pseudopotentials + plane waves | 06, 07 |
@@ -78,16 +79,20 @@ DFT_seminar_materials/
 │   ├── ja/                          Japanese manual
 │   └── zh/                          Simplified Chinese manual
 ├── 00_environment/                  vim / tmux configuration examples
-├── 01_2-site-convergence/           exercise 01
-├── 02_2-site-KSeq-convergence/      exercise 02
-├── 03_sinx_fitting/                 exercise 03
-├── 04_sinx-cosx/                    exercise 04
-├── 05_gaussian-plane-wave-fitting/  exercise 05
-├── 06_qe-examples/                  exercise 06 (Quantum ESPRESSO)
-├── 07_homo-lumo/                    exercise 07
-├── TB_model/                        exercise 08
+├── 01_2-site-convergence/           exercise 01: SCF loop and mixing (on-site = U·n)
+├── 02_2-site-KSeq-convergence/      exercise 02: Kohn-Sham equation (v_eff = V_H + V_xc)
+├── 03_sinx_fitting/                 exercise 03: Fourier expansion of a square wave (Gibbs phenomenon)
+├── 04_sinx-cosx/                    exercise 04: an odd function in a cos basis (basis symmetry)
+├── 05_gaussian-plane-wave-fitting/  exercise 05: a Gaussian in a plane-wave basis (cutoff energy)
+├── 06_qe-examples/                  exercise 06: real QE runs (H₂O, graphene/graphite, Si bands/DOS/phonons)
+├── 07_homo-lumo/                    exercise 07: HOMO-LUMO of F₂ (relax → SCF → orbital visualisation)
+├── TB_model/                        exercise 08: tight-binding graphene (Dirac cone, vs. first principles)
 └── 99_slides/                       lecture slides (git-ignored, see below)
 ```
+
+> `KSeq` in `02_2-site-KSeq-convergence/` stands for **K**ohn-**S**ham **eq**uation
+> (not "k-point sequence"). Exercise 02 replaces the on-site energy `U·n` of
+> exercise 01 with the Kohn-Sham effective potential `v_eff = V_H + V_xc`.
 
 > `99_slides/` is **not included in the repository** (git-ignored).
 > Lecture slides, exercise sheets and homework are distributed separately by
