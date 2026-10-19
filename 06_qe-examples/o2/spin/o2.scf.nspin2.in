@@ -1,0 +1,38 @@
+&CONTROL
+  calculation = 'scf'
+  etot_conv_thr =   1.0000000000d-05
+  forc_conv_thr =   1.0000000000d-04
+  outdir = './out/'
+  prefix = 'o2'
+  pseudo_dir = './'
+  tprnfor = .true.
+  verbosity = 'high'
+/
+&SYSTEM
+  degauss =   1.0000000000d-02
+  ecutrho =   4.8000000000d+02
+  ecutwfc =   6.0000000000d+01
+  ibrav = 0
+  nat = 2
+  nosym = .false.
+  ntyp = 1
+  occupations = 'smearing'
+  smearing = 'gaussian'
+  nspin = 2
+  starting_magnetization(1) =   5.0000000000d-01
+/
+&ELECTRONS
+  conv_thr =   1.0000000000d-08
+  electron_maxstep = 200
+  mixing_beta =   3.0000000000d-01
+/
+ATOMIC_SPECIES
+O      15.9994 O.pbe-n-kjpaw_psl.0.1.UPF
+ATOMIC_POSITIONS crystal
+O     0.4395000000        0.5000000000        0.5000000000
+O     0.5605000000        0.5000000000        0.5000000000
+K_POINTS gamma
+CELL_PARAMETERS angstrom
+       10.0000000000         0.0000000000         0.0000000000
+        0.0000000000        10.0000000000         0.0000000000
+        0.0000000000         0.0000000000        10.0000000000

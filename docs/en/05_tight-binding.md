@@ -91,7 +91,7 @@ What is computed:
 2. Vary `sigma` through 0.02 / 0.10 / 0.5 and compare how the van Hove
    singularities appear in the DOS
 3. Vary `nk_grid` through 30 / 60 / 120 and see how smooth the DOS becomes
-   (→ the same issue as k-point convergence of the DOS in 03-6)
+   (→ the same issue as the k-point convergence of exercise **3-9**)
 4. Explain why the PDOS of A and B agree exactly, using the symmetry of the
    sublattices
 5. **Add an on-site energy**: give A and B different on-site energies (±Δ) and

@@ -1,0 +1,16 @@
+NAME si
+CAL  xc
+NUM_PROCS 6
+
+# ============================================
+# 演習 3-10: 交換相関汎関数の比較（LDA vs PBE）
+#
+# XC_LIST : 比較する擬ポテンシャル。
+#   Si.pz-n-rrkjus_psl.0.1.UPF   LDA (PZ)
+#   Si.pbe-n-rrkjus_psl.0.1.UPF  GGA (PBE)
+#
+#   この 2 つは USPP / NLCC あり / z_valence=4 / l_max=2 が
+#   完全に一致し、functional だけが違う。
+#   汎関数の効果だけを取り出すために、わざとこの組を選んである。
+# ============================================
+XC_LIST Si.pz-n-rrkjus_psl.0.1.UPF Si.pbe-n-rrkjus_psl.0.1.UPF

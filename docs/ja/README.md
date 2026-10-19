@@ -27,7 +27,7 @@ Institute of Science Tokyo / CLS Tateyama-Ando Group 内セミナー
 | 00 | [環境構築](00_setup.md) | `00_environment/` | Terminal, Homebrew, Git, Python, Quantum ESPRESSO | 1–2 h |
 | 01 | [自己無撞着場 (SCF)](01_scf.md) | `01_`, `02_` | `01_`: SCF ループ, mixing ／ `02_`: Kohn-Sham 方程式（Hartree + 交換相関, double counting） | 1 h |
 | 02 | [基底関数と完備性](02_basis.md) | `03_`, `04_`, `05_` | Fourier 展開, 完備性, 平面波基底, cutoff energy | 1.5 h |
-| 03 | [Quantum ESPRESSO 入門](03_quantum-espresso.md) | `06_qe-examples/` | SCF, relax, 波動関数, band, DOS, PDOS, phonon | 3–4 h |
+| 03 | [Quantum ESPRESSO 入門](03_quantum-espresso.md) | `06_qe-examples/` | SCF, relax, 波動関数, band, DOS, PDOS, phonon, k 点収束, 汎関数比較, スピン分極 | 3–4 h |
 | 04 | [HOMO-LUMO 解析](04_homo-lumo.md) | `07_homo-lumo/` | 分子軌道の可視化とエネルギー準位 | 1 h |
 | 05 | [Tight-binding モデル](05_tight-binding.md) | `TB_model/` | TB モデルと第一原理計算の対応 | 1 h |
 
@@ -80,7 +80,8 @@ DFT_seminar_materials/
 ├── 03_sinx_fitting/                 演習 03: 矩形波の Fourier 展開（Gibbs 現象）
 ├── 04_sinx-cosx/                    演習 04: 奇関数を cos 基底で展開（基底の対称性）
 ├── 05_gaussian-plane-wave-fitting/  演習 05: Gaussian の平面波展開（cutoff energy）
-├── 06_qe-examples/                  演習 06: QE 実計算（H₂O, graphene/graphite, Si band/DOS/phonon）
+├── 06_qe-examples/                  演習 06: QE 実計算（H₂O, graphene/graphite, Si band/DOS/phonon,
+│                                            k 点収束, LDA vs PBE, O₂ スピン分極）
 ├── 07_homo-lumo/                    演習 07: F₂ の HOMO-LUMO（relax → SCF → 軌道可視化）
 ├── TB_model/                        演習 08: graphene の tight-binding（Dirac cone・第一原理との比較）
 └── 99_slides/                       講義スライド（.gitignore 済・配布は別途）

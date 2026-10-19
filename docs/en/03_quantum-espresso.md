@@ -580,6 +580,319 @@ phonopy -p pdos.conf             # → projected_dos.dat
 
 ---
 
+## 3-9. k-point convergence test (silicon)
+
+**Directory**: [`06_qe-examples/sillicon/kconv/`](../../06_qe-examples/sillicon/kconv/)
+
+**Goal**: run the one pillar of the "three pillars of convergence testing" that
+exercise 05 (cutoff) and exercise 03 (vacuum layer) do not cover — **k-point
+convergence**.
+
+In a periodic system an integral over the Brillouin zone is approximated by a
+finite sum over k-points. With too few of them, neither the total energy nor the
+forces nor the bands can be trusted.
+
+```bash
+cd 06_qe-examples/sillicon/kconv
+cat system.in            # K_LIST 2 4 6 8 10 12 14
+./run-kconv.sh
+```
+
+The script changes **only** the k-mesh in `si.scf.in.tmpl` and repeats the SCF.
+Cutoff, structure and pseudopotential stay fixed — **changing exactly one
+quantity is the golden rule of a convergence test**.
+
+Results land in `kconv.dat`. To plot them:
+
+```bash
+source ../../../.venv/bin/activate
+python plot-kconv.py          # kconv.png
+```
+
+### Verified reference values
+
+**QE 7.5 / 6 MPI / Apple Silicon / 11 s for all 7 cases**
+
+| k-mesh | irreducible k-points | Total energy (Ry) | Deviation from 14×14×14 (mRy) |
+|---|---|---|---|
+| 2×2×2 | 3 | `-22.65063727` | **187.696** |
+| 4×4×4 | 8 | `-22.82563276` | 12.701 |
+| 6×6×6 | 16 | `-22.83871576` | 0.382 |
+| 8×8×8 | 29 | `-22.83753033` | 0.803 |
+| 10×10×10 | 47 | `-22.83784804` | 0.486 |
+| 12×12×12 | 72 | `-22.83814573` | 0.188 |
+| 14×14×14 | 104 | `-22.83833364` | — |
+
+What this shows:
+
+1. **2×2×2 is off by 188 mRy (≈ 2.6 eV).** Energy differences between structures
+   are discussed at the mRy level, so this is simply unusable.
+2. **Convergence is not monotonic.** 6×6×6 sits 0.382 mRy *below* the reference
+   and 8×8×8 comes back 0.803 mRy *above* it. This is why **you must never take
+   two points, see a small difference, and declare convergence**.
+3. **Cost is set by the irreducible k-point count, not n³.** Symmetry reduces
+   14³ = 2744 points to 104.
+
+### Side note: convergence under different settings (all measured)
+
+k-point convergence is entangled with other settings. The table below uses the
+same structure and cutoff, changing only what the column says, and lists the
+deviation from that column's own 14×14×14 value.
+
+| k-mesh | default<br>(cold smearing, degauss 0.02) | `occupations='fixed'` | degauss 0.05 |
+|---|---|---|---|
+| 2×2×2 | 187.696 | 187.808 | 184.097 |
+| 4×4×4 | 12.701 | 13.825 | 13.832 |
+| 6×6×6 | 0.382 | 1.759 | 1.603 |
+| 8×8×8 | 0.803 | 0.285 | 0.010 |
+| that column's 14³ value (Ry) | `-22.83833364` | `-22.83960904` | `-22.83792684` |
+
+- With `fixed`, **the oscillation disappears and convergence becomes monotonic**.
+  The non-monotonic behaviour of the default was produced by the cold smearing.
+  For a semiconductor, `fixed` is the physically correct choice.
+- Raising degauss drops the 8×8×8 residual from **0.803 to 0.010 mRy**: smearing
+  smooths over an insufficient k-point sampling.
+- But **all three columns converge to a different value** (up to 1.3 mRy apart).
+  Smearing hides the k-point deficiency, and in exchange you converge to a
+  different answer. **"What it converged to" only means something together with
+  the settings.**
+
+Odd meshes, also measured (default settings, deviation from 14³):
+
+| | 3×3×3 | 5×5×5 | 7×7×7 | 9×9×9 |
+|---|---|---|---|---|
+| irreducible k-points | 4 | 10 | 20 | 35 |
+| deviation (mRy) | 44.52 | 3.54 | **1.24** | 0.69 |
+
+**7×7×7 (20 irreducible points) is worse than 6×6×6 (16 points)** — more
+k-points, less accuracy. Odd and even meshes do not lie on one smooth curve, so
+never mix the two series when comparing.
+
+### Tasks
+
+1. Add `3 5 7 9` to `K_LIST` and reproduce the odd-mesh table above. Why is
+   7×7×7 worse than 6×6×6? Think about Γ and the weights of high-symmetry points
+2. Switch `si.scf.in.tmpl` to `occupations = 'fixed'` (delete the `degauss` and
+   `smearing` lines) and confirm that the oscillation disappears
+3. Set `nosym = .true.` and run 8×8×8. The irreducible count goes 29 → 260 while
+   the total energy only moves `-22.83753033` → `-22.83753027`. Explain what
+   symmetry is saving
+4. Repeat the test on graphene (`06_qe-examples/graphene/scf/`), a semimetal, and
+   confirm that it needs many more k-points than the semiconductor silicon
+
+### Checklist
+
+- [ ] You can explain what the k-mesh discretises
+- [ ] You can explain why a convergence test changes exactly one quantity
+- [ ] You can explain that convergence may be non-monotonic, hence the need for ≥ 3 points
+- [ ] You can explain that changing the smearing moves the converged value itself
+- [ ] You can explain the relation between irreducible k-points and cost
+
+---
+
+## 3-10. Comparing exchange-correlation functionals (LDA vs PBE)
+
+**Directory**: [`06_qe-examples/sillicon/xc/`](../../06_qe-examples/sillicon/xc/)
+
+**Goal**: exercise 02 used the toy form `V_xc = -A·√n`. In a real DFT
+calculation the choice of approximation for E_xc drives the result. Here we
+quantify that through the lattice constant.
+
+```
+LDA (PZ)   local density approximation: E_xc depends only on n(r) at each point
+PBE (GGA)  generalised gradient approximation: it also uses ∇n(r)
+```
+
+### The pseudopotentials used
+
+```bash
+cd 06_qe-examples/sillicon/xc
+grep -iE 'functional=|pseudo_type|core_correction|z_valence|l_max' *.UPF
+```
+
+| | `Si.pz-n-rrkjus_psl.0.1.UPF` | `Si.pbe-n-rrkjus_psl.0.1.UPF` |
+|---|---|---|
+| `functional` | **LDA** | **PBE** |
+| `pseudo_type` | USPP | USPP |
+| `core_correction` | T | T |
+| `z_valence` | 4 | 4 |
+| `l_max` | 2 | 2 |
+
+**This pair was chosen deliberately: everything but `functional` is identical.**
+Comparing pseudopotentials built by different schemes would mix the effect of
+the functional with the effect of the pseudopotential.
+
+> As 3-0 said, **LDA and PBE must never be mixed inside one calculation**. What
+> we do here is run two separate calculations and compare their results — that
+> is not mixing.
+
+```bash
+./run-xc.sh
+```
+
+### Verified reference values
+
+**QE 7.5 / 6 MPI / 19 s for both cases** (vc-relax; residual pressure ≈ 0 kbar in
+both)
+
+| Functional | Equilibrium a₀ (Å) | Deviation from experiment | Total energy (Ry) |
+|---|---|---|---|
+| LDA (PZ) | **5.3987** | **−0.6 %** | `-22.76784172` |
+| PBE (GGA) | **5.4687** | **+0.7 %** | `-22.83615811` |
+| Experiment | 5.431 | — | — |
+
+**LDA binds too strongly (overbinding), PBE too weakly (underbinding), and the
+experimental value sits between them.** This is a general trend across many
+solids, not something specific to Si.
+
+> **Never compare total energies across two functionals.**
+> The definition of E_xc differs, so the energy zero differs. Reading
+> `-22.768` against `-22.836` and concluding "PBE is more stable" is wrong.
+> What may be compared are energy *differences* **within one functional**
+> (structure A vs B) and structural quantities such as the lattice constant.
+
+### Band gap (reference, measured)
+
+Reading the Kohn-Sham indirect gap at each functional's own equilibrium lattice
+constant, with `occupations = 'fixed'` on an 8×8×8 mesh:
+
+| Functional | KS indirect gap |
+|---|---|
+| LDA | 0.441 eV |
+| PBE | 0.611 eV |
+| Experiment | **1.17 eV** |
+
+**Going from LDA to PBE does not bring the gap to experiment** (38 % → 52 %).
+The lattice constant improved with PBE; the gap did not. This is not a question
+of functional accuracy — it stems from the **self-interaction error (SIE)** seen
+in [task 4 of exercise 02](01_scf.md), and from the fact that KS eigenvalues are
+not quasiparticle energies.
+
+> These are values on a mesh, so they differ slightly from the band-path value in
+> 3-5 (PBE 0.67 eV): the true CBM may not fall on the mesh. The point is not the
+> absolute number but that **the LDA–PBE difference (0.17 eV) is small compared
+> with the gap to experiment (over 0.5 eV)**.
+
+### Tasks
+
+1. Convert the 0.07 Å difference in `a₀` into a percentage change in volume
+2. Estimate the bulk modulus from the `si.vc-relax.*.out` of each functional
+   (sample a few lattice constants and fit the E–V curve). Compare with the
+   experimental 98 GPa
+3. Redo the band calculation of 3-5 with the LDA pseudopotential and check how
+   the overall band shape compares with PBE (nearly identical apart from the gap)
+4. Repeat the comparison on graphite (`06_qe-examples/graphite/`), where the
+   interlayer distance differs far more dramatically. Look into how LDA and GGA
+   treat van der Waals forces
+
+### Checklist
+
+- [ ] You can state the difference between LDA and GGA in one sentence
+- [ ] You can explain why the pseudopotentials must match when comparing functionals
+- [ ] You can explain why absolute total energies must not be compared across functionals
+- [ ] You can describe the overbinding/underbinding trend of LDA/GGA
+- [ ] You can explain why moving to GGA does not fix the band-gap problem
+
+---
+
+## 3-11. Spin polarisation (the triplet ground state of O₂)
+
+**Directory**: [`06_qe-examples/o2/spin/`](../../06_qe-examples/o2/spin/)
+
+**Goal**: every calculation so far treated ↑ and ↓ electrons as identical
+(`nspin = 1`). For an open-shell system that breaks down.
+
+The ground state of O₂ is the **triplet** ³Σg⁻: the two π* orbitals each take one
+↑ electron (Hund's rule). Solving without separating the spins cannot reach it.
+
+```bash
+cd 06_qe-examples/o2/spin
+./run-spin.sh
+```
+
+Structure, pseudopotential and cutoff stay fixed; only `nspin` changes.
+
+```
+nspin = 1                           the same potential for ↑ and ↓
+nspin = 2                           separate potentials for ↑ and ↓
+starting_magnetization(1) = 0.5     initial magnetisation (needed to break the symmetry)
+```
+
+### Verified reference values
+
+**QE 7.5 / 6 MPI / 9 s for both cases** (bond length 1.21 Å, 10 Å cubic cell,
+Γ point only)
+
+| | Total energy (Ry) | total magnetization (μB/cell) |
+|---|---|---|
+| `nspin = 1` | `-82.97218672` | 0.00 |
+| `nspin = 2` | **`-83.04565381`** | **2.00** |
+
+```
+E(nspin=2) - E(nspin=1) = -1.000 eV        ← the triplet is 1 eV more stable
+total magnetization     =  2.00 μB/cell    ← 2 unpaired ↑ = a triplet
+```
+
+That the magnetisation comes out at **exactly 2.00** matters. It is not a
+coincidence: it *is* the triplet, one ↑ electron in each of the two π* orbitals.
+
+### Looking at the splitting
+
+```bash
+grep -A11 "SPIN UP"   o2.scf.nspin2.out | tail -8
+grep -A11 "SPIN DOWN" o2.scf.nspin2.out | tail -8
+grep -i   "Fermi"     o2.scf.nspin2.out | tail -1
+```
+
+Eigenvalues at Γ (eV):
+
+```
+SPIN UP    -32.7708 -20.3546 -13.3518 -13.3464 -13.3464  -6.6492  -6.6492 | -0.3853 ...
+SPIN DOWN  -31.5870 -18.5567 -12.4444 -11.4820 -11.4820  -4.3350  -4.3350 |  1.0807 ...
+                                                           ↑↑
+                                            the π* orbitals; exchange splitting 2.314 eV
+
+Fermi = -5.4846 eV      ← between π*(↑) at -6.6492 and π*(↓) at -4.3350
+```
+
+The same command also prints the `occupation numbers`, the direct evidence for
+the triplet:
+
+```
+SPIN UP     1 1 1 1 1 1 1 | 0 0 0      ← 7 occupied
+SPIN DOWN   1 1 1 1 1 0 0 | 0 0 0      ← 5 occupied (both π* empty)
+```
+
+The 12 valence electrons split into 7 ↑ and 5 ↓ (7 − 5 = 2 = the magnetisation).
+The Fermi level falls between π*(↑) and π*(↓), so **π*(↑) is occupied and π*(↓)
+is empty** — exactly the triplet configuration.
+
+**Every ↑ level lies deeper than its ↓ counterpart** because ↑ is the majority
+spin and gains stabilisation from exchange between same-spin electrons. This is
+the origin of magnetism.
+
+### Tasks
+
+1. Set `starting_magnetization(1)` to `0.0` and see what happens (the symmetry
+   may never break, leaving you in the same solution as `nspin = 1`)
+2. Change the bond length from 1.21 Å to 1.10 / 1.30 Å and track how the
+   triplet–singlet energy difference changes
+3. Work out why `absolute magnetization` (2.05 μB) is slightly larger than
+   `total magnetization` (2.00 μB) — the two are defined differently
+4. Repeat for N₂ (closed shell) and confirm the magnetisation stays 0 even with
+   `nspin = 2` (get the pseudopotential from SSSP; see
+   [the extension of exercise 07](04_homo-lumo.md))
+
+### Checklist
+
+- [ ] You can explain what `nspin = 1` versus `nspin = 2` changes
+- [ ] You can explain from Hund's rule why O₂ has a triplet ground state
+- [ ] You can explain why `starting_magnetization` is needed (symmetry breaking)
+- [ ] You can explain the ↑/↓ eigenvalue splitting in terms of exchange
+- [ ] You can say what goes wrong if you forget `nspin = 2` for a magnetic material
+
+---
+
 ## Summary
 
 | Section | System | `CAL` | Main output | Measured time |
@@ -593,6 +906,9 @@ phonopy -p pdos.conf             # → projected_dos.dat
 | 3-6 | silicon | `dos` | `*.dos` → `dos.pdf` | 7 min 23 s |
 | 3-7 | silicon | `proj` | `*.pdos_atm#*` → `projwfc.pdf` | 3 min 44 s |
 | 3-8 | silicon | (phonopy) | `band.yaml`, `projected_dos.dat` | 8 min 36 s |
+| 3-9 | silicon | `scf` × 7 | `kconv.dat` → `kconv.png` | 11 s |
+| 3-10 | silicon | `vc-relax` × 2 | `xc.dat` | 19 s |
+| 3-11 | O₂ | `scf` × 2 | `spin.dat` | 9 s |
 
 All times measured on **Apple Silicon with 6 MPI processes** (graphite: 8).
 
@@ -610,11 +926,15 @@ the Terminal**.
 ### The three pillars of convergence testing (always do these in research)
 
 1. **`ecutwfc` convergence** — find the cutoff beyond which the total energy
-   stops changing (→ exercise 05)
+   stops changing (→ exercise 05, task 2 of 3-1)
 2. **k-point convergence** — densify the mesh until the total energy stops
-   changing
+   changing (→ **3-9**)
 3. **Vacuum layer / cell size convergence** — remove the influence of periodic
    images in isolated and surface systems (→ exercise 03)
+
+> The three pillars are not independent. As 3-9 shows, changing the smearing
+> moves the value that the k-point series converges to. **"What it converged to"
+> only means something together with the settings.**
 
 ---
 

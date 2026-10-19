@@ -18,3 +18,7 @@ __pycache__/
 # --- 計算で生成される中間ファイル ---
 out/
 *.cube
+
+# 収束テストがテンプレートから毎回生成する中間 input
+06_qe-examples/sillicon/kconv/si.scf.in
+06_qe-examples/sillicon/xc/si.vc-relax.in

@@ -1,0 +1,3 @@
+# functional  pseudopotential  a0(ang)  E_tot(Ry)
+LDA          Si.pz-n-rrkjus_psl.0.1.UPF       5.3987     -22.76784172
+PBE          Si.pbe-n-rrkjus_psl.0.1.UPF      5.4687     -22.83615811

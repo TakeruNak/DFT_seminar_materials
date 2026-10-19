@@ -27,7 +27,7 @@
 | 00 | [环境搭建](00_setup.md) | `00_environment/` | 终端, Homebrew, Git, Python, Quantum ESPRESSO | 1–2 h |
 | 01 | [自洽场 (SCF)](01_scf.md) | `01_`, `02_` | `01_`: SCF 循环, 混合 (mixing) ／ `02_`: Kohn-Sham 方程（Hartree + 交换关联, double counting） | 1 h |
 | 02 | [基函数与完备性](02_basis.md) | `03_`, `04_`, `05_` | 傅里叶展开, 完备性, 平面波基, 截断能 | 1.5 h |
-| 03 | [Quantum ESPRESSO 入门](03_quantum-espresso.md) | `06_qe-examples/` | SCF, 结构优化, 波函数, 能带, DOS, PDOS, 声子 | 3–4 h |
+| 03 | [Quantum ESPRESSO 入门](03_quantum-espresso.md) | `06_qe-examples/` | SCF, 结构优化, 波函数, 能带, DOS, PDOS, 声子, k 点收敛, 泛函比较, 自旋极化 | 3–4 h |
 | 04 | [HOMO-LUMO 分析](04_homo-lumo.md) | `07_homo-lumo/` | 分子轨道的可视化与能级 | 1 h |
 | 05 | [紧束缚模型](05_tight-binding.md) | `TB_model/` | 紧束缚模型与第一性原理计算的对应关系 | 1 h |
 
@@ -81,7 +81,8 @@ DFT_seminar_materials/
 ├── 03_sinx_fitting/                 练习 03: 方波的傅里叶展开（Gibbs 现象）
 ├── 04_sinx-cosx/                    练习 04: 用 cos 基展开奇函数（基的对称性）
 ├── 05_gaussian-plane-wave-fitting/  练习 05: 高斯函数的平面波展开（截断能）
-├── 06_qe-examples/                  练习 06: QE 实际计算（H₂O, graphene/graphite, Si 能带/DOS/声子）
+├── 06_qe-examples/                  练习 06: QE 实际计算（H₂O, graphene/graphite, Si 能带/DOS/声子,
+│                                            k 点收敛, LDA vs PBE, O₂ 自旋极化）
 ├── 07_homo-lumo/                    练习 07: F₂ 的 HOMO-LUMO（结构优化 → SCF → 轨道可视化）
 ├── TB_model/                        练习 08: graphene 紧束缚模型（Dirac 锥・与第一性原理对比）
 └── 99_slides/                       讲义幻灯片（已 .gitignore，另行分发）
