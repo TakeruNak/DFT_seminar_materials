@@ -198,7 +198,7 @@ open -a VESTA output.xyz
 | `99_slides/` | 講義スライド原本。**remote に push しない** |
 | `out/` | 計算の作業ディレクトリ。巨大 |
 | `*.cube` | 波動関数の出力。数十 MB |
-| `.answear` | 解答例 |
+| `.answer` | 解答例 |
 
 ```bash
 git status            # commit 前に必ず確認する

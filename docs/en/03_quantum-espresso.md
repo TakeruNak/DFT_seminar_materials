@@ -59,6 +59,54 @@ The main values `CAL` can take:
 | `out/` | Scratch directory created by the run (git-ignored) |
 | `<NAME>.*.out` | Calculation logs |
 
+### Looking inside a pseudopotential (5 min)
+
+Exercise 05 concluded that representing core electrons directly in plane waves
+is impractical. The fix is the `.UPF` files sitting in `pseudo/` — and they are
+readable text:
+
+```bash
+cd 06_qe-examples/h2o/scf
+grep -iE 'element=|z_valence|pseudo_type|functional=' pseudo/*.UPF
+```
+
+```
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   element=" H"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   pseudo_type="USPP"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   functional="PBE"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   z_valence="1.000000000000000E+000"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    element=" O"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    pseudo_type="PAW"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    functional=" SLA  PW   PBX  PBC"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    z_valence="6.000000000000000E+000"
+```
+
+| Field | Meaning |
+|---|---|
+| `z_valence` | **How many electrons are actually solved for**: 6 for O, not 8 (the 1s² is frozen); 1 for H |
+| `functional` | The functional this pseudopotential was generated with (PBE, PZ, …) |
+| `pseudo_type` | `NC` (norm-conserving) / `US` (ultrasoft) / `PAW` |
+
+The file name itself follows a convention (`O.pbe-n-kjpaw_psl.0.1.UPF`
+= element O / PBE / PAW). H₂O therefore has 6 + 1 + 1 = **8** valence electrons,
+matching `number of electrons = 8.00` in `*.scf.out`. Only 4 bands are occupied,
+yet `number of Kohn-Sham states` reads **8**: `occupations = 'smearing'` makes QE
+add empty bands — the same reason 3-1 lists 8 eigenvalues.
+
+**Check that you can**
+
+1. Add up `z_valence` for your example and reconcile it with the valence
+   electron count and `nbnd` in `&SYSTEM`
+2. Look up the **recommended `ecutwfc`** for that element on
+   [SSSP](https://www.materialscloud.org/discover/sssp/) and compare it with the
+   value in the input file (the same cutoff convergence story as task 2 of 3-1)
+3. Explain why LDA and PBE pseudopotentials must not be mixed in one calculation
+
+> When `pseudo_type` is `US` or `PAW`, `ecutrho` must be 8–12 × `ecutwfc`
+> (4 × is enough for `NC`). If the ratio is too small the SCF will not converge.
+
+---
+
 ### Structure of a QE input file
 
 ```
@@ -166,6 +214,33 @@ grep '!' h2o.relax.out                                 # total energy per step
 ```
 
 The relaxed structure is saved as `h2o.relax.vasp`.
+
+### Where the forces come from (Hellmann-Feynman theorem)
+
+The forces printed by `grep 'Total force'` are **not** obtained by numerical
+differentiation. Differentiating the energy with respect to a nuclear
+coordinate R gives
+
+```
+F = -dE/dR = -⟨ψ| ∂H/∂R |ψ⟩        ← Hellmann-Feynman theorem
+```
+
+in which **the derivative of the wavefunction ∂ψ/∂R drops out**. So once a
+single SCF cycle has produced the density n(r), the forces follow
+**analytically**.
+
+```
+solve SCF → n(r) → forces F → move the atoms → solve SCF again …   (= relax)
+```
+
+If forces could only be obtained by numerical differentiation, each atom would
+need at least 6 extra SCF runs and relaxation would be impractical. **This
+theorem is what turned DFT into a structure-prediction tool.**
+
+> With basis functions attached to the atoms (localised bases), ∂ψ/∂R does not
+> fully drop out and a correction called the **Pulay force** is required. Plane
+> waves do not depend on the atomic positions, which is one reason QE can report
+> forces directly.
 
 **Verified reference values** (6 MPI / 1 min)
 
@@ -348,6 +423,8 @@ The path is determined by the crystal symmetry. For your own system use
 
 1. Read the band gap of Si from `silicon.band.gnu` and compare with experiment (1.17 eV)
 2. Investigate why PBE/LDA underestimate the band gap
+   (one of the main causes is the **self-interaction error (SIE)** you met in
+   [task 4 of exercise 02](01_scf.md))
 3. The default path samples only 2 points per segment, so the bands look like
    straight line segments. Increase the number at the end of each line of
    `K_POINTS crystal_b` in `silicon.nscf.in` to about 20 for a smooth plot

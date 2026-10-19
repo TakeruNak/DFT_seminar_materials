@@ -56,6 +56,51 @@ NUM_PROCS 6         ← MPI 并行数。不要超过本机物理核心数
 | `out/` | 计算生成的工作目录（已 `.gitignore`） |
 | `<NAME>.*.out` | 计算结果日志 |
 
+### 看一眼赝势文件（5 分钟）
+
+练习 05 的结论是「直接用平面波表示内层电子不现实」。其解决方案就是放在 `pseudo/`
+里的 `.UPF` 文件，而它的内容是可读的：
+
+```bash
+cd 06_qe-examples/h2o/scf
+grep -iE 'element=|z_valence|pseudo_type|functional=' pseudo/*.UPF
+```
+
+```
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   element=" H"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   pseudo_type="USPP"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   functional="PBE"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   z_valence="1.000000000000000E+000"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    element=" O"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    pseudo_type="PAW"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    functional=" SLA  PW   PBX  PBC"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    z_valence="6.000000000000000E+000"
+```
+
+| 字段 | 含义 |
+|---|---|
+| `z_valence` | **实际参与求解的电子数**：O 是 6 而非 8（1s² 被冻结），H 是 1 |
+| `functional` | 生成该赝势所用的泛函（PBE / PZ 等） |
+| `pseudo_type` | `NC`（模守恒）/ `US`（超软）/ `PAW` |
+
+文件名本身就是一种约定（`O.pbe-n-kjpaw_psl.0.1.UPF`
+= 元素 O / PBE / PAW）。因此 H₂O 的价电子为 6 + 1 + 1 = **8 个**，与 `*.scf.out` 中的
+`number of electrons = 8.00` 一致。占据的能带只有 4 条，但
+`number of Kohn-Sham states` 显示为 **8**——因为 `occupations = 'smearing'`
+使 QE 补充了空带，这也是 3-1 中列出 8 个本征值的原因。
+
+**需要确认**
+
+1. 数一下自己例题的 `z_valence`，与价电子数以及 `&SYSTEM` 中的 `nbnd` 是否吻合
+2. 在 [SSSP](https://www.materialscloud.org/discover/sssp/) 查该元素的
+   **推荐 `ecutwfc`**，与 input file 中的值比较（与 3-1 任务 2 的截断能收敛测试同理）
+3. 说明为什么同一个计算中不能混用 LDA 与 PBE 的赝势
+
+> 当 `pseudo_type` 为 `US` / `PAW` 时，`ecutrho` 需取 `ecutwfc` 的 8–12 倍
+>（`NC` 取 4 倍即可）。该比值不足会导致 SCF 不收敛。
+
+---
+
 ### QE 输入文件的结构
 
 ```
@@ -159,6 +204,27 @@ grep '!' h2o.relax.out                                 # 各步的总能量
 ```
 
 优化后的结构保存为 `h2o.relax.vasp`。
+
+### 力从何而来（Hellmann-Feynman 定理）
+
+`grep 'Total force'` 给出的力**并非**通过数值微分求得。将能量对核坐标 R 求导，
+
+```
+F = -dE/dR = -⟨ψ| ∂H/∂R |ψ⟩        ← Hellmann-Feynman 定理
+```
+
+其中**波函数的导数 ∂ψ/∂R 被消掉了**。也就是说，只要解一次 SCF 得到密度 n(r)，
+力就可以**解析地**得到。
+
+```
+解 SCF → n(r) → 力 F → 移动原子 → 再解 SCF …   （= relax）
+```
+
+如果力只能靠数值微分求得，每个原子至少要额外跑 6 次 SCF，结构优化将不具实用性。
+**正是这条定理使 DFT 成为结构预测的工具。**
+
+> 当基函数附着在原子上时（局域基），∂ψ/∂R 不能完全消去，需要称为 **Pulay 力**
+> 的修正项。平面波不依赖原子位置，这也是 QE 能直接给出力的原因之一。
 
 **已验证的参考值**（6 MPI / 耗时 1 分钟）
 
@@ -332,6 +398,7 @@ replot
 
 1. 从 `silicon.band.gnu` 读出 Si 的带隙，与实验值（1.17 eV）比较
 2. 调查 PBE/LDA 低估带隙的原因
+   （主要成因之一是 [练习 02 任务 4](01_scf.md) 中看到的 **自相互作用误差 (SIE)**）
 3. 默认路径每段只取 2 个点，因此能带看起来是折线。把 `silicon.nscf.in` 中
    `K_POINTS crystal_b` 各行末尾的数字（每段的分割数）增大到 20 左右，
    得到光滑的能带图

@@ -56,6 +56,51 @@ NUM_PROCS 6         ← MPI 並列数。自分のマシンの物理コア数以�
 | `out/` | 計算で生成される作業ディレクトリ（`.gitignore` 済） |
 | `<NAME>.*.out` | 計算結果のログ |
 
+### 擬ポテンシャルを覗く（5 分）
+
+演習 05 で「内殻電子をそのまま平面波で表すのは非現実的」という結論に達した。
+その解決策が `pseudo/` に置いてある `.UPF` ファイルである。中身は読める：
+
+```bash
+cd 06_qe-examples/h2o/scf
+grep -iE 'element=|z_valence|pseudo_type|functional=' pseudo/*.UPF
+```
+
+```
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   element=" H"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   pseudo_type="USPP"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   functional="PBE"
+pseudo/H.pbe-rrkjus_psl.1.0.0.UPF:   z_valence="1.000000000000000E+000"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    element=" O"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    pseudo_type="PAW"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    functional=" SLA  PW   PBX  PBC"
+pseudo/O.pbe-n-kjpaw_psl.0.1.UPF:    z_valence="6.000000000000000E+000"
+```
+
+| 項目 | 意味 |
+|---|---|
+| `z_valence` | **実際に解く電子の数**。O は 8 ではなく 6（1s² を凍結）、H は 1 |
+| `functional` | この擬ポテンシャルが作られた汎関数（PBE / PZ など） |
+| `pseudo_type` | `NC`（norm-conserving）/ `US`（ultrasoft）/ `PAW` |
+
+ファイル名そのものが規約になっている（`O.pbe-n-kjpaw_psl.0.1.UPF`
+= 元素 O / PBE / PAW 系）。H₂O の価電子は 6 + 1 + 1 = **8 個**で、`*.scf.out` の
+`number of electrons = 8.00` と一致する。占有バンドは 4 本だが
+`number of Kohn-Sham states` は **8** と出る——`occupations = 'smearing'` のため
+QE が空バンドを足しているからで、3-1 の固有値が 8 個並ぶのも同じ理由である。
+
+**確認すること**
+
+1. 自分の例題の `z_valence` を数え、`&SYSTEM` の `nbnd` や価電子数と辻褄が合うか
+2. [SSSP](https://www.materialscloud.org/discover/sssp/) でその元素の**推奨 `ecutwfc`**
+   を調べ、input file の値と比べる（→ 3-1 課題 2 の cutoff 収束テストと同じ話）
+3. 同じ計算の中で LDA の UPF と PBE の UPF を混ぜてはいけない理由を説明する
+
+> `pseudo_type` が `US` / `PAW` のときは `ecutrho` を `ecutwfc` の 8〜12 倍
+> 取る必要がある（`NC` なら 4 倍で足りる）。この比が足りないと SCF が収束しない。
+
+---
+
 ### QE input file の構造
 
 ```
@@ -157,6 +202,30 @@ grep '!' h2o.relax.out                                 # 各 step の全エネ�
 ```
 
 最適化後の構造は `h2o.relax.vasp` として保存されている。
+
+### 力はどこから来るか（Hellmann-Feynman の定理）
+
+`grep 'Total force'` で出てくる力は、数値微分で求めたものでは**ない**。
+エネルギーを核座標 R で微分すると、
+
+```
+F = -dE/dR = -⟨ψ| ∂H/∂R |ψ⟩        ← Hellmann-Feynman の定理
+```
+
+となり、**波動関数の微分 ∂ψ/∂R が落ちる**。つまり SCF を 1 回解いて密度 n(r) が
+求まれば、そこから力が**解析的に**得られる。
+
+```
+SCF を解く → n(r) → 力 F → 原子を動かす → 再び SCF …   （= relax）
+```
+
+もし力が数値微分でしか求まらないなら、原子 1 個あたり最低 6 回の SCF が必要になり、
+構造最適化は実用にならない。**DFT が構造予測の道具になったのは、この定理が
+あるからである。**
+
+> 実際には基底関数が原子に張り付いている場合（局在基底）、∂ψ/∂R が完全には
+> 落ちず **Pulay 力**という補正項が要る。平面波基底は原子位置に依存しないので
+> この問題がなく、QE が力を素直に出せる理由の一つになっている。
 
 **動作確認済みの参照値**（6 MPI / 実行 1 分）
 
@@ -330,6 +399,7 @@ replot
 
 1. `silicon.band.gnu` から Si のバンドギャップを読み取り、実験値（1.17 eV）と比較する
 2. PBE/LDA がバンドギャップを過小評価する理由を調べる
+   （→ 主因の一つは [演習 02 の課題 4](01_scf.md) で見た **自己相互作用誤差 (SIE)**）
 3. 既定のパスは 1 区間あたり 2 点しか取っていないため、バンドが折れ線に見える。
    `silicon.nscf.in` の `K_POINTS crystal_b` の各行末の数字（区間の分割数）を
    20 程度に増やして滑らかなバンド図にする

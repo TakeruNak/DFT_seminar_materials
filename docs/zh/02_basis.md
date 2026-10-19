@@ -41,7 +41,7 @@ source ../.venv/bin/activate
 python fourier.py
 ```
 
-初始状态为 `N_list = [1]`（1 个基函数）。会弹出绘图窗口。
+初始状态为 `N_list = [1]`（1 个基函数）。会弹出绘图窗口，同时保存 `fourier.png`。
 
 ### 任务
 
@@ -83,14 +83,14 @@ cd 04_sinx-cosx
 python odd-by-even-rep.py
 ```
 
-标准输出给出系数 `a_0 … a_N`，图中显示原函数与近似结果。
+标准输出给出系数 `a_0 … a_N`，图中显示原函数与近似结果。图像保存为 `odd-by-even.png`。
 
 ### 任务
 
 1. 查看输出的系数 `a_k` 的数值（发生了什么？）
 2. 确认把 `N = 10` 增大到 `N = 100` 也不会改善结果
 3. 确认加入 sin 基后就能表示
-   （完整版示例见 `.answear/odd-by-full-rep.py`）
+   （完整版示例见 `.answer/odd-by-full-rep.py`）
 
 ### 自查清单
 
@@ -125,7 +125,7 @@ cd 05_gaussian-plane-wave-fitting/one-shot
 python wf-fitting.py
 ```
 
-标准输出给出 `Energy cutoff / k_max / n_max` 和相对误差 (RSE)。
+标准输出给出 `Energy cutoff / k_max / n_max` 和相对误差 (RSE)。图像保存为 `one-shot_wave.png`。
 
 | 变量 | 默认值 | 含义 |
 |---|---|---|

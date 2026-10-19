@@ -138,12 +138,27 @@ python 2-site-KSeq.py
 2. Raise `A` through 0 → 5 → 10 → 20 and follow where the solution settles in
    `vxc_vs_density.png`
 3. Check `totalN.png` — is the particle number conserved?
+4. **Self-interaction error (SIE)**: as `totalN.png` shows, this system holds only
+   **one** electron (the density is built from the normalised ground-state
+   eigenvector, so n₁ + n₂ = 1 always). Applying a Hartree term `V_H = U·n` to a
+   single electron means **the electron repels itself**. For a one-electron system
+   E_H and E_xc must cancel exactly. Compare the ground state at `U = 0` and
+   `U = 4` and decide which one is physically correct.
+
+> **Why this matters**
+>
+> The error you just saw is the **self-interaction error (SIE)**, one of the
+> biggest weaknesses of LDA / GGA. In exercise 3-5 you will meet the fact that
+> PBE/LDA underestimates the band gap of silicon — SIE is one of its main causes.
+> Hybrid functionals (HSE, B3LYP) mix in exact exchange precisely to cancel part
+> of this error.
 
 ### Checklist
 
 - [ ] You can explain the different roles of the Hartree and exchange-correlation terms
 - [ ] You can explain why `E_tot = ε_KS - E_H + E_xc` contains a subtraction (double counting)
 - [ ] You can explain that the KS eigenvalue ε and the total energy E are different things
+- [ ] You can explain what is wrong with applying a Hartree term to a one-electron system (SIE)
 
 ---
 

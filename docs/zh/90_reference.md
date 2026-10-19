@@ -198,7 +198,7 @@ open -a VESTA output.xyz
 | `99_slides/` | 讲义幻灯片原件。**不要 push 到远端** |
 | `out/` | 计算的工作目录，体积巨大 |
 | `*.cube` | 波函数输出，数十 MB |
-| `.answear` | 参考答案 |
+| `.answer` | 参考答案 |
 
 ```bash
 git status            # 提交前务必确认

@@ -40,10 +40,11 @@ At the K point f(k) = 0, which produces the **Dirac cone**.
 cd TB_model/graphene/src
 source ../../../.venv/bin/activate
 pip install pythtb pymatgen       # if not installed yet
-python test.py
+python graphene_tb.py
 ```
 
-> `test.py` is the working script; `graphene.py` is only a template (imports).
+> `graphene_tb.py` is the working script (it writes `graphene_tb.png`).
+> `template/graphene.py` is only a skeleton with imports and is not run.
 > `pythtb` **2.0 or later** is required (it uses the `TBModel` / `Lattice` API).
 > `pymatgen` is only used in the commented-out CIF export, but it is imported,
 > so it must be installed.

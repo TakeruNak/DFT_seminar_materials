@@ -44,7 +44,8 @@ source ../.venv/bin/activate
 python fourier.py
 ```
 
-The default is `N_list = [1]` (a single basis function). A plot window opens.
+The default is `N_list = [1]` (a single basis function). A plot window opens and
+`fourier.png` is written.
 
 ### Tasks
 
@@ -90,14 +91,14 @@ python odd-by-even-rep.py
 ```
 
 The coefficients `a_0 … a_N` are printed, and the plot shows the original
-function together with the approximation.
+function together with the approximation. The figure is saved as `odd-by-even.png`.
 
 ### Tasks
 
 1. Look at the printed coefficients `a_k` — what is happening?
 2. Confirm that increasing `N = 10` to `N = 100` does not improve anything
 3. Confirm that adding sine functions does work
-   (a complete version is in `.answear/odd-by-full-rep.py`)
+   (a complete version is in `.answer/odd-by-full-rep.py`)
 
 ### Checklist
 
@@ -135,6 +136,7 @@ python wf-fitting.py
 ```
 
 `Energy cutoff / k_max / n_max` and the relative error (RSE) are printed.
+The figure is saved as `one-shot_wave.png`.
 
 | Variable | Default | Meaning |
 |---|---|---|

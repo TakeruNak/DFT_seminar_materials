@@ -41,7 +41,7 @@ source ../.venv/bin/activate
 python fourier.py
 ```
 
-初期状態は `N_list = [1]`（基底 1 本）。グラフウィンドウが開く。
+初期状態は `N_list = [1]`（基底 1 本）。グラフウィンドウが開き、同時に `fourier.png` が保存される。
 
 ### 課題
 
@@ -83,13 +83,13 @@ cd 04_sinx-cosx
 python odd-by-even-rep.py
 ```
 
-標準出力に係数 `a_0 ... a_N` が、グラフに元関数と近似結果が表示される。
+標準出力に係数 `a_0 ... a_N` が、グラフに元関数と近似結果が表示される。図は `odd-by-even.png` に保存される。
 
 ### 課題
 
 1. 出力された係数 `a_k` の値を確認する（何が起きているか）
 2. `N = 10` を `N = 100` に増やしても結果が改善しないことを確認する
-3. sin 基底を足せば表せることを確認する（`.answear/odd-by-full-rep.py` に完全形の例）
+3. sin 基底を足せば表せることを確認する（`.answer/odd-by-full-rep.py` に完全形の例）
 
 ### 確認事項
 
@@ -124,7 +124,7 @@ cd 05_gaussian-plane-wave-fitting/one-shot
 python wf-fitting.py
 ```
 
-標準出力に `Energy cutoff / k_max / n_max` と相対誤差 (RSE) が出る。
+標準出力に `Energy cutoff / k_max / n_max` と相対誤差 (RSE) が出る。図は `one-shot_wave.png` に保存される。
 
 | 変数 | 既定値 | 意味 |
 |---|---|---|

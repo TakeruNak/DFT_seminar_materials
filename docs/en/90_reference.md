@@ -200,7 +200,7 @@ They are git-ignored, but just in case.
 | `99_slides/` | Original lecture slides. **Never push them to the remote** |
 | `out/` | QE scratch directory; huge |
 | `*.cube` | Wavefunction output; tens of MB |
-| `.answear` | Answer keys |
+| `.answer` | Answer keys |
 
 ```bash
 git status            # always check before committing

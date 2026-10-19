@@ -38,10 +38,11 @@ H(k) = |  0      f(k)  |        f(k) = t · Σ_δ exp(i k·δ)
 cd TB_model/graphene/src
 source ../../../.venv/bin/activate
 pip install pythtb pymatgen       # 未導入の場合
-python test.py
+python graphene_tb.py
 ```
 
-> `test.py` が動作する本体。`graphene.py` はテンプレート（import のみ）。
+> `graphene_tb.py` が本体（出力は `graphene_tb.png`）。
+> `template/graphene.py` は import だけの雛形で、実行には使わない。
 > `pythtb` は **2.0 以降**が必要（`TBModel` / `Lattice` API を使う）。
 > `pymatgen` は CIF 出力のコメント部分でのみ使うが、import されるので必要。
 

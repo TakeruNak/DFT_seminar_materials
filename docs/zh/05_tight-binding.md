@@ -38,10 +38,11 @@ H(k) = |  0      f(k)  |        f(k) = t · Σ_δ exp(i k·δ)
 cd TB_model/graphene/src
 source ../../../.venv/bin/activate
 pip install pythtb pymatgen       # 若尚未安装
-python test.py
+python graphene_tb.py
 ```
 
-> `test.py` 才是实际运行的脚本；`graphene.py` 只是模板（仅有 import）。
+> `graphene_tb.py` 才是实际运行的脚本（输出 `graphene_tb.png`）。
+> `template/graphene.py` 只是仅含 import 的骨架，不用于运行。
 > `pythtb` 需要 **2.0 以上**（使用 `TBModel` / `Lattice` API）。
 > `pymatgen` 仅在被注释掉的 CIF 导出部分用到，但由于被 import，必须安装。
 

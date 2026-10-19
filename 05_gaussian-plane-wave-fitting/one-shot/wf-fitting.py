@@ -95,6 +95,7 @@ plt.title("Plane Wave Expansion Convergence")
 plt.xlabel("x")
 plt.ylabel("f(x)")
 plt.legend(loc="upper right")
+plt.savefig("one-shot_wave.png", dpi=300)
 plt.show()
 plt.close()
 

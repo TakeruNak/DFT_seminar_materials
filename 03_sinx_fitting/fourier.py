@@ -55,4 +55,5 @@ for i, N in enumerate(N_list):
     plt.grid(True)
 
 plt.tight_layout()
+plt.savefig("fourier.png", dpi=300)
 plt.show()
